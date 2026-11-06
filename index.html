@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="Portal do Corretor Parceiro Yuny: empreendimentos, materiais e contato com os gerentes de Parcerias.">
-<meta name="theme-color" content="#0f3a45">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f3a45'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23fff' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#1a1612">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a1612'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23fff' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
 <title>Yuny Parcerias — Portal do Corretor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
 <style>
 :root{
   /* Yuny Parcerias: petróleo + turquesa da marca sobre pedra clara. Vitrine filtrável em cards; ficha em painel lateral; barra "seu gerente" fixa no topo. */
@@ -262,6 +263,109 @@ footer{color:var(--tinta-suave);font-size:14px;margin-top:40px}
   .barra-ger .acoes-ger{margin-left:0;width:100%}
 }
 @media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+
+/* ================= TEMA YUNY (teste) =================
+   Baseado em yuny.com.br: fundo off-white quente, tinta quase preta, bronze como destaque,
+   Satoshi nos títulos (mistura fino + negrito), DM Sans no texto, rótulos em CAIXA ALTA espaçada,
+   cantos retos. */
+:root{
+  --petroleo:#1a1612; --turquesa:#a07840; --pedra:#f7f4f0; --papel:#fdfbf8;
+  --tinta:#1a1612; --tinta-suave:#6b6560; --linha:#e6e0d8;
+  --bronze:#a07840; --bronze-claro:#c9a96e; --areia:#f5f0eb;
+  --ok:#4f6b52; --ok-bg:transparent; --obra:#a07840; --obra-bg:transparent; --breve:#1a1612; --breve-bg:transparent;
+  --camp:#8c3b2a; --camp-bg:#f6ebe6;
+  --f-display:"Satoshi","DM Sans",system-ui,sans-serif;
+  --f-corpo:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+body{font-size:16px;font-weight:400}
+:focus-visible{outline-color:var(--bronze)}
+.rotulo,.grupo .rot,th,.fato .r,.bloco h3,.gerente .reg,.gestao h3{font-family:var(--f-corpo);font-size:11px !important;font-weight:500 !important;letter-spacing:.16em !important;text-transform:uppercase;color:var(--bronze) !important}
+/* topo */
+.topo{background:var(--tinta)}
+.marca b{font-family:var(--f-display);font-weight:700;font-size:28px;letter-spacing:-1px;color:#f7f4f0}
+.marca span{font-family:var(--f-corpo);font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--bronze-claro);margin-left:4px}
+.topo nav a{font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(247,244,240,.8);border-radius:0}
+.topo nav a:hover{background:transparent;color:var(--bronze-claro)}
+.toggle{border-radius:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;background:transparent;border-color:rgba(247,244,240,.35)}
+.toggle[aria-pressed="true"]{background:var(--bronze);border-color:var(--bronze);color:#f7f4f0}
+.barra-ger{background:var(--areia);border-bottom:1px solid var(--linha)}
+.avatar{background:var(--tinta);font-family:var(--f-display);font-weight:500}
+/* títulos */
+.painel-cab h2,.secao h2,.ficha h2,.acesso-intro h1,.destaque h2,.revendas h2,.sheet h3,.termos h3{font-family:var(--f-display);font-weight:300;letter-spacing:-.03em;color:var(--tinta)}
+.painel-cab h2 b,.secao h2 b,.acesso-intro h1 b,.destaque h2 b{font-weight:700}
+.painel-cab h2,.secao h2{font-size:36px}
+/* destaque */
+.destaque{background:var(--tinta);border-radius:0}
+.destaque .arte{background:linear-gradient(180deg,rgba(26,22,18,0) 35%,rgba(26,22,18,.85) 100%),url("img/quaddra-jesuino.jpg") center 35%/cover no-repeat,#1a1612}
+.destaque .arte .num{font-family:var(--f-display);font-weight:300;letter-spacing:-.04em;font-size:64px}
+.destaque .arte .num small{color:var(--bronze-claro);font-size:11px;letter-spacing:.2em}
+.destaque h2{color:#f7f4f0;font-size:44px}
+.destaque p{color:rgba(247,244,240,.72);font-weight:300}
+.destaque .selo{color:var(--bronze-claro)}
+/* busca e filtros */
+.busca{border-radius:0;border-color:var(--linha);background:var(--papel);font-weight:300}
+.chip{border-radius:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;min-height:38px;background:transparent}
+.chip[aria-pressed="true"]{background:var(--tinta);border-color:var(--tinta);color:#f7f4f0}
+.limpar,.linkzinho{color:var(--bronze);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;font-weight:600}
+.linkzinho{font-size:13px}
+/* cards */
+.card{border-radius:0;border:0;background:transparent}
+.card:hover{transform:none;box-shadow:none}
+.card:hover .foto img{transform:scale(1.03)}
+.foto{background:#e6e0d8}
+.foto img{transition:transform .6s ease}
+.foto .bairro-tag{z-index:1;text-shadow:0 1px 6px rgba(0,0,0,.5);background:none;left:14px;top:auto;bottom:12px;font-size:10px;font-weight:400;letter-spacing:.18em;color:rgba(247,244,240,.9);padding:0;border-radius:0}
+.foto .bairro-tag::after{content:", São Paulo"}
+.foto::after{content:"";position:absolute;inset:auto 0 0 0;height:45%;background:linear-gradient(180deg,transparent,rgba(26,22,18,.55));pointer-events:none}
+.foto .camp{border-radius:0;background:var(--bronze);font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;z-index:1}
+.foto .tipo-arte{background:linear-gradient(160deg,#2a241e,#1a1612)}
+.foto .tipo-arte b{font-family:var(--f-display);font-weight:300;letter-spacing:-.03em}
+.foto .tipo-arte span{color:var(--bronze-claro)}
+.card .corpo{padding:14px 2px 6px;gap:6px}
+.card h3{font-family:var(--f-display);font-weight:500;font-size:22px;letter-spacing:-.02em;color:var(--tinta)}
+.card .gancho{font-weight:300;font-size:14px}
+.card .resumo{font-size:13px;color:var(--tinta-suave)}
+.card .comis{border-radius:0;background:none;padding:0;color:var(--bronze);font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.card .rodape{border-top:1px solid var(--linha);padding-top:10px}
+.card .ver{white-space:nowrap;color:var(--tinta);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+.card .ver::after{content:" →";color:var(--bronze)}
+.selo{white-space:normal;border-radius:0;padding:0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;background:none}
+.selo::before{width:5px;height:5px}
+/* tabelas, blocos, gerentes */
+.tabela-com,.bloco,.fato,.gerente,.gestao,.cartao,.vazio{border-radius:0;box-shadow:none}
+th{background:var(--areia)}
+.gerente.atual{border:1px solid var(--bronze);box-shadow:inset 0 0 0 1px var(--bronze)}
+.gerente .nome{font-family:var(--f-display);font-weight:500}
+.revendas{background:var(--tinta);border-radius:0}
+.revendas p{color:rgba(247,244,240,.72);font-weight:300}
+.com{border-left:3px solid var(--bronze)}
+.camp-bloco{border-left:3px solid var(--camp)}
+.tipos .a{font-weight:500}
+/* botões */
+.btn{border-radius:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;min-height:48px}
+.btn-mini{font-size:11px;min-height:38px}
+.btn-pri{background:var(--bronze);color:#f7f4f0}
+.btn-pri:hover{background:#8a6634}
+.btn-sec{background:transparent;color:var(--tinta);border:1px solid var(--tinta)}
+.btn-claro{background:#f7f4f0;color:var(--tinta)}
+.btn-fant{border:1px solid rgba(247,244,240,.5)}
+.mats .btn{font-size:11px}
+.flutuante{box-shadow:0 8px 24px rgba(26,22,18,.25)}
+.fechar{border-radius:0;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta)}
+/* acesso */
+#acesso{background:radial-gradient(80% 60% at 0% 100%,rgba(160,120,64,.12),transparent 60%),var(--pedra)}
+.acesso-intro h1{font-size:48px}
+.acesso-intro p{font-weight:300}
+.abas{border-radius:0;background:var(--areia)}
+.abas button{border-radius:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.abas button[aria-selected="true"]{color:var(--tinta);box-shadow:none;border-bottom:2px solid var(--bronze)}
+.campo input[type=text],.campo input[type=password],.campo input[type=email],.campo input[type=tel]{border-radius:0;background:var(--papel)}
+.opcao{border-radius:0;background:var(--papel)}
+.opcao:has(input:checked){border-color:var(--bronze);background:var(--areia)}
+.opcao input,.aceite input{accent-color:var(--bronze)}
+.condicional{border-radius:0;background:var(--areia);border-color:var(--linha)}
+.retorno,.sheet,.termos{border-radius:0}
+.fundo{background:rgba(26,22,18,.55)}
 </style>
 </head>
 <body>
@@ -270,7 +374,7 @@ footer{color:var(--tinta-suave);font-size:14px;margin-top:40px}
   <div class="topo-in">
     <a class="marca" href="#inicio" aria-label="Yuny Parcerias, início"><b>yuny</b><span>parcerias</span></a>
     <nav aria-label="Seções">
-      <a href="#empreendimentos">Empreendimentos</a>
+      <a href="#empreendimentos">Projetos</a>
       <a href="#comissoes" class="so-corretor">Comissões</a>
       <a href="#gerentes">Gerentes</a>
       <button class="toggle" type="button" id="modo" aria-pressed="false" title="Esconde comissões e campanhas para mostrar a tela ao cliente">Modo cliente</button>
@@ -284,7 +388,8 @@ footer{color:var(--tinta-suave);font-size:14px;margin-top:40px}
 <section id="acesso" aria-labelledby="acesso-tit">
   <div class="acesso-in">
     <div class="acesso-intro">
-      <h1 id="acesso-tit">Portal de Parcerias Yuny</h1>
+      <p class="rotulo" style="margin:0 0 10px">Na Yuny, parceria é o projeto.</p>
+      <h1 id="acesso-tit">Portal do <b>Corretor</b></h1>
       <p>Área exclusiva para corretores parceiros. Entre com seu CPF e senha ou faça seu cadastro em 2 minutos.</p>
       <ul>
         <li>Tabelas, books, plantas e vídeos de todos os empreendimentos</li>
@@ -372,7 +477,7 @@ footer{color:var(--tinta-suave);font-size:14px;margin-top:40px}
 
   <section class="painel" id="empreendimentos" aria-labelledby="emp-tit">
     <div class="painel-cab">
-      <h2 id="emp-tit">Empreendimentos</h2>
+      <h2 id="emp-tit">Nossos <b>projetos</b></h2>
       <span class="contagem" id="contagem" aria-live="polite"></span>
     </div>
     <label for="busca" class="sr">Buscar empreendimento, bairro ou rua</label>
@@ -742,7 +847,7 @@ function render(){
         <div class="gancho">${esc(e.gancho)}</div>
         <div class="resumo">${esc(resumo(e))}</div>
         ${e.com ? `<div class="comis so-corretor">${e.com.pj===e.com.pf ? esc(e.com.pj)+" PJ e PF" : esc(e.com.pj)+" PJ · "+esc(e.com.pf)+" PF"}</div>` : ""}
-        <div class="rodape"><span class="selo ${cls}">${rot}${e.entrega ? " · "+esc(e.entrega) : ""}</span><span class="ver">Ver ficha</span></div>
+        <div class="rodape"><span class="selo ${cls}">${rot}${e.entrega ? " · "+esc(e.entrega) : ""}</span><span class="ver">Ver projeto</span></div>
       </div></a>`;
   }).join("") : `<div class="vazio">Nenhum empreendimento com esses filtros. <button type="button" class="limpar" id="limpar2">Limpar filtros</button></div>`;
   $("#limpar2")?.addEventListener("click", limparFiltros);
