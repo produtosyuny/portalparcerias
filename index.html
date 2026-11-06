@@ -599,6 +599,7 @@ function aplicarPlanilha(linhas){
 function redesenhar(){
   [...estado.bairro].forEach(b => { if (!FILTROS[0].ops.some(o=>o[0]===b)) estado.bairro.delete(b); });
   montarFiltros();
+  renderComissoes();
   document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", estado[b.dataset.f].has(b.dataset.v)));
   render();
   if (location.hash.startsWith("#e-")) rota();
@@ -827,6 +828,10 @@ function renderGestao(){
   document.querySelectorAll("[data-copiar-link]").forEach(b => b.addEventListener("click", async () => {
     try { await navigator.clipboard.writeText(b.dataset.copiarLink); b.textContent = "Copiado"; } catch { b.textContent = "Selecione e copie"; }
   }));
+  renderComissoes();
+}
+/* Tabela de comissões: mesma lista e mesma ordem dos cards (vem da planilha). */
+function renderComissoes(){
   $("#tab-com").innerHTML = EMPS.map(e => `<tr><td>${esc(e.nome)}</td><td>${e.com ? esc(e.com.pj) : "a divulgar"}</td><td>${e.com ? esc(e.com.pf) : "a divulgar"}</td></tr>`).join("");
 }
 
