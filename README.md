@@ -36,3 +36,11 @@ Com `API_URL` vazio, o portal guarda o cadastro só no navegador (modo teste).
 Se mudar o código depois: **Implantar > Gerenciar implantações > editar > Nova versão** (a URL continua a mesma).
 
 Esqueceu a senha: apague a célula da coluna **O (Senha)** do corretor. Ele refaz o cadastro com o mesmo CPF.
+
+## Empreendimentos vêm da planilha
+
+O site lê a aba **Empreendimentos** da planilha "Base do Portal Parcerias" toda vez que alguém abre o portal.
+- **No portal?** = NÃO esconde o empreendimento. SIM mostra.
+- Qualquer campo alterado na planilha (nome, bairro, endereço, estágio, entrega, gancho, plantas, comissões, campanha) passa a valer no site.
+- Linha nova com um id novo vira um card novo (sem foto).
+- Na prévia do claude.ai o site não consegue ler a planilha (bloqueio do claude.ai): lá ele mostra a cópia do dia da publicação, e o login fica só no navegador. No GitHub funciona tudo ao vivo.

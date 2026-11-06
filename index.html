@@ -429,7 +429,7 @@ footer{color:var(--tinta-suave);font-size:14px;margin-top:40px}
 
 <script>
 /* ======================= DADOS =======================
-   No portal final, tudo isto vem da planilha de Parcerias. */
+   Base do site. A planilha (aba Empreendimentos) é lida ao abrir e manda no que mudar. */
 
 const GERENTES = [
   {id:"alberto", nome:"Alberto Monteiro", tel:"5511996110179"},
@@ -499,10 +499,108 @@ const EMPS = [
    gancho:"Fachadas ativas para comércio e alimentação", perfis:["invest","lojas"], img:null, arte:"18 operações", arteSub:"em 9 empreendimentos", campanha:"Até 8% + bônus",
    tipos:[], lojasLista:[
      ["Quaddra Lorena · Jardins","2 operações","352,63 a 1.664,95 m²"],["155 Jerônimo · Itaim","4 lojas","130,69 a 465,3 m²"],["177 Jerônimo · Itaim","2 lojas","sob consulta"],
-     ["Esquina Jardyn · Jardins","2 lojas","326,58 a 570,97 m²"],["Camino · Alto da Boa Vista","2 lojas (residencial 100% vendido)","95,28 a 950,4 m²"],["Uapé · Av. Angélica","1 loja","503,75 m²"],
+     ["Esquina Jardyn · Jardins","2 lojas","326,58 a 570,97 m²"],["Camino · Alto da Boa Vista","2 lojas","95,28 a 950,4 m²"],["Uapé · Av. Angélica","1 loja","503,75 m²"],
      ["Zip Brooklin · Brooklin","1 loja","223,57 m²"],["Uwin Brooklin · Av. Santo Amaro","2 lojas","101,49 a 114,85 m²"],["Organy · Vila Clementino","2 lojas (residencial 100% vendido)","sob consulta"]],
    com:{pj:"até 8% + bônus",pf:"até 8% + bônus"}, mats:[], pagina:"lojas-yuny"}
 ];
+
+/* ================= PLANILHA (aba Empreendimentos) =================
+   O portal lê a planilha "Base do Portal Parcerias" toda vez que abre.
+   - "No portal?" = NÃO esconde o empreendimento; SIM mostra.
+   - Qualquer campo que você ALTERAR na planilha passa a valer no site.
+   - Campos que continuam iguais ao que estava em 06/11/2026 mantêm o texto mais completo do site.
+   - Linha nova (id que o site não conhece) vira um card novo, sem foto. */
+const PLANILHA_CSV = "https://docs.google.com/spreadsheets/d/1K_bNor56Ew2PI91kUxtSIFioDnQC95mKM5KH5h_lmUU/export?format=csv&gid=0";
+const SEMENTE = {"quaddra-jesuino": ["Quaddra Jesuíno", "Itaim Bibi", "Rua Jesuíno Arruda, 520", "Pré-lançamento", "06/2030", "Torre única, 1 apartamento por andar", "Aptos 326 e 387 m² · gardens 349 e 478 m² · coberturas duplex 552 e 609 m²", "4%", "3%", ""], "quaddra-lorena": ["Quaddra Lorena", "Jardins", "Alameda Lorena, 70", "Em obras", "08/2028", "Maior terreno dos Jardins (5.414 m²)", "Aptos 300 e 387 m² · gardens 467 e 585 m² · coberturas 546 e 713 m²", "4%", "3%", ""], "155-jeronimo": ["155 Jerônimo", "Itaim Bibi", "Rua Jerônimo da Veiga, 155", "Pronto", "Pronto", "Pé-direito duplo no Itaim", "Aptos 73, 87 e 90 m² · 134 e 137 m² pé-direito duplo · coberturas 209, 276 e 340 m²", "4%", "3%", "12% OFF"], "esquina-jardyn": ["Esquina Jardyn", "Jardins", "Alameda Franca, 1.166", "Pronto", "Pronto", "3 quadras da Oscar Freire", "70, 91 e 132 m² (2 e 3 dorms.)", "4%", "3%", "Até 15% OFF"], "1125-joaquim": ["1125 Joaquim", "Itaim Bibi", "Rua Joaquim Floriano, 1.125", "Pronto", "Pronto", "Ao lado da Faria Lima", "147 m² · 3 suítes · 2 vagas", "4%", "3%", "Última unidade"], "uape": ["Uapé", "Higienópolis", "Rua Pará, 210", "Em obras", "2026", "No tradicional Higienópolis", "Boutique studios 25 a 51 m² · 3 suítes 167 a 207 m²", "4%", "3%", ""], "177-jeronimo": ["177 Jerônimo", "Itaim Bibi", "Rua Jerônimo da Veiga, 177", "Em obras", "", "Novo ícone do Itaim, futuro boulevard gastronômico", "64 a 182 m² · 1 a 3 suítes · boutique apartments", "4%", "3%", "Alta comissão"], "zip-brooklin": ["Zip Brooklin", "Brooklin", "Av. Dr. Chucri Zaidan, 111", "Pronto", "Pronto", "Studio para investimento", "Studio 24 m²", "4%", "3%", ""], "lojas": ["Lojas Yuny", "Várias", "18 operações em 9 empreendimentos", "Lojas", "", "Fachadas ativas para comércio e alimentação", "ver aba Lojas", "até 8% + bônus", "até 8% + bônus", ""]};
+const EMPS_BASE = EMPS.map(e => ({...e}));
+// Cópia da planilha no dia da publicação: usada se não der para ler a planilha (ex.: prévia no claude.ai).
+const PLANILHA_INICIAL = [["id", "Nome", "No portal?", "Bairro", "Endereço", "Estágio", "Entrega", "Gancho de venda", "Plantas (resumo)", "Comissão PJ", "Comissão PF", "Campanha ativa", "Pasta no drive", "Fonte dos dados", "Atualizado em", "Pendência"], ["quaddra-jesuino", "Quaddra Jesuíno", "SIM", "Itaim Bibi", "Rua Jesuíno Arruda, 520", "Pré-lançamento", "06/2030", "Torre única, 1 apartamento por andar", "Aptos 326 e 387 m² · gardens 349 e 478 m² · coberturas duplex 552 e 609 m²", "4%", "3%", "", "", "", "", ""], ["quaddra-lorena", "Quaddra Lorena", "SIM", "Jardins", "Alameda Lorena, 70", "Em obras", "08/2028", "Maior terreno dos Jardins (5.414 m²)", "Aptos 300 e 387 m² · gardens 467 e 585 m² · coberturas 546 e 713 m²", "4%", "3%", "", "", "", "", ""], ["155-jeronimo", "155 Jerônimo", "SIM", "Itaim Bibi", "Rua Jerônimo da Veiga, 155", "Pronto", "Pronto", "Pé-direito duplo no Itaim", "Aptos 73, 87 e 90 m² · 134 e 137 m² pé-direito duplo · coberturas 209, 276 e 340 m²", "4%", "3%", "12% OFF", "", "", "", ""], ["esquina-jardyn", "Esquina Jardyn", "SIM", "Jardins", "Alameda Franca, 1.166", "Pronto", "Pronto", "3 quadras da Oscar Freire", "70, 91 e 132 m² (2 e 3 dorms.)", "4%", "3%", "Até 15% OFF", "", "", "", ""], ["1125-joaquim", "1125 Joaquim", "NAO", "Itaim Bibi", "Rua Joaquim Floriano, 1.125", "Pronto", "Pronto", "Ao lado da Faria Lima", "147 m² · 3 suítes · 2 vagas", "4%", "3%", "Última unidade", "", "", "", ""], ["uape", "Uapé", "SIM", "Higienópolis", "Rua Pará, 210", "Em obras", "2026", "No tradicional Higienópolis", "Boutique studios 25 a 51 m² · 3 suítes 167 a 207 m²", "4%", "3%", "", "", "", "", ""], ["177-jeronimo", "177 Jerônimo", "SIM", "Itaim Bibi", "Rua Jerônimo da Veiga, 177", "Em obras", "", "Novo ícone do Itaim, futuro boulevard gastronômico", "64 a 182 m² · 1 a 3 suítes · boutique apartments", "4%", "3%", "Alta comissão", "", "", "", ""], ["zip-brooklin", "Zip Brooklin", "SIM", "Brooklin", "Av. Dr. Chucri Zaidan, 111", "Pronto", "Pronto", "Studio para investimento", "Studio 24 m²", "4%", "3%", "", "", "", "", ""], ["lojas", "Lojas Yuny", "SIM", "Várias", "18 operações em 9 empreendimentos", "Lojas", "", "Fachadas ativas para comércio e alimentação", "ver aba Lojas", "até 8% + bônus", "até 8% + bônus", "", "", "", "", ""], ["camino", "Camino", "SIM", "Alto da Boa Vista", "Rua Marechal Deodoro, 399", "Pronto", "Pronto", "", "Studios", "", "", "", "", "Rogerio", "05/11/2026", ""], ["organy", "Organy", "NÃO (residencial 100% vendido)", "Vila Clementino", "Rua Luís Góis, 2.073", "Pronto", "Pronto", "", "", "", "", "", "", "Rogerio", "05/11/2026", ""]];
+const PREVIA = /claude/i.test(location.hostname);
+function lerCSV(txt){
+  const out=[]; let row=[], cel="", q=false;
+  for (let i=0;i<txt.length;i++){ const c=txt[i];
+    if (q){ if (c==='"'){ if (txt[i+1]==='"'){cel+='"';i++;} else q=false; } else cel+=c; }
+    else if (c==='"') q=true; else if (c===','){row.push(cel);cel="";}
+    else if (c==='\n'){row.push(cel);out.push(row);row=[];cel="";} else if (c!=='\r') cel+=c; }
+  if (cel||row.length){row.push(cel);out.push(row);}
+  return out;
+}
+const estagioDe = t => { t=semAcento(t||""); return /loja/.test(t)?"lojas": /obra/.test(t)?"obra": /pronto/.test(t)?"pronto": /(pre|lanc|breve)/.test(t)?"breve": null; };
+function tipoDe(txt){ const t=semAcento(txt);
+  if (/studio|estudio/.test(t)) return "studio";
+  if (/garden|cobertura|penthouse|duplex/.test(t)) return "garden";
+  if (/4 (suites|dorm)/.test(t)) return "4s";
+  if (/3 (suites|dorm)|3 e 4/.test(t)) return "3d";
+  if (/2 (suites|dorm)/.test(t)) return "2d";
+  if (/1 (suite|dorm)|boutique ap/.test(t)) return "1d";
+  return null; }
+function tiposDoTexto(txt){
+  const lista=[];
+  (txt||"").split(/\s*·\s*/).filter(Boolean).forEach(p => {
+    const m = p.match(/^(.*?)(\d[\d.,\s]*(?:a|e|,)?[\d.,\s]*m².*)$/i);
+    if (m) lista.push({d:(m[1].trim()||"Unidades").replace(/^./,c=>c.toUpperCase()), a:m[2].trim()});
+    else if (lista.length) lista[lista.length-1].d += " · " + p.trim();
+    else lista.push({d:p.trim().replace(/^./,c=>c.toUpperCase()), a:""});
+  });
+  return lista.map(x => ({...x, t: tipoDe(x.d+" "+x.a)}));
+}
+function aplicarPlanilha(linhas){
+  if (!linhas || linhas.length<2) return false;
+  const cab = linhas[0].map(h=>semAcento(h.trim()));
+  const col = nome => cab.findIndex(h => h.startsWith(nome));
+  const C = {id:col("id"), nome:col("nome"), portal:col("no portal"), bairro:col("bairro"), end:col("endereco"), est:col("estagio"), ent:col("entrega"),
+             gancho:col("gancho"), plantas:col("plantas"), pj:col("comissao pj"), pf:col("comissao pf"), camp:col("campanha"), pasta:col("pasta")};
+  if (C.id<0 || C.portal<0) return false;
+  const nova = [];
+  linhas.slice(1).forEach(l => {
+    const v = k => C[k]>=0 ? (l[C[k]]||"").trim() : "";
+    const id = v("id"); if (!id) return;
+    if (/^n[aã]o/i.test(semAcento(v("portal")))) return;          // escondido
+    const sem = SEMENTE[id] || [], mudou = (k,i) => v(k) !== (sem[i] ?? null);
+    const base = EMPS_BASE.find(e => e.id === id);
+    const e = base ? {...base} : {id, perfis:[], img:null, destaques:[], tipos:[], mats:[], com:null, novo:true};
+    if (!base && !v("nome")) return;
+    if (mudou("nome",0) && v("nome")) e.nome = v("nome");
+    if (mudou("bairro",1) && v("bairro")) e.bairro = v("bairro");
+    if (mudou("end",2)) e.end = v("end");
+    if (mudou("est",3) && estagioDe(v("est"))) e.estagio = estagioDe(v("est"));
+    if (mudou("ent",4)) e.entrega = /pronto/i.test(v("ent")) ? "" : v("ent");
+    if (mudou("gancho",5)) e.gancho = v("gancho");
+    if (mudou("plantas",6) && id!=="lojas") e.tipos = tiposDoTexto(v("plantas"));
+    if (mudou("pj",7) || mudou("pf",8)) e.com = (v("pj")||v("pf")) ? {pj:v("pj")||v("pf"), pf:v("pf")||v("pj")} : null;
+    if (mudou("camp",9)) e.campanha = v("camp");
+    if (e.novo){
+      e.estagio = e.estagio || "pronto";
+      e.arte = e.nome; e.arteSub = e.bairro;
+      if (v("pasta")) e.mats = [["Pasta completa", v("pasta")]];
+      const t = new Set(e.tipos.map(x=>x.t));
+      e.perfis = [...(t.has("studio")||t.has("1d") ? ["invest"] : []), ...(e.estagio==="pronto" ? ["pronto"] : [])];
+    }
+    nova.push(e);
+  });
+  if (!nova.length) return false;
+  EMPS.splice(0, EMPS.length, ...nova);
+  FILTROS[0].ops = [...new Set(EMPS.map(e=>e.bairro).filter(b=>b && !/^v[aá]rias/i.test(b)))].map(b=>[b,b]);
+  return true;
+}
+function redesenhar(){
+  [...estado.bairro].forEach(b => { if (!FILTROS[0].ops.some(o=>o[0]===b)) estado.bairro.delete(b); });
+  montarFiltros();
+  document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed", estado[b.dataset.f].has(b.dataset.v)));
+  render();
+  if (location.hash.startsWith("#e-")) rota();
+}
+async function sincronizarPlanilha(){
+  let cache = null; try { cache = JSON.parse(store.get("yuny-planilha")||"null"); } catch {}
+  if (aplicarPlanilha(cache || PLANILHA_INICIAL)) redesenhar();
+  if (PREVIA) return;
+  try {
+    const r = await fetch(PLANILHA_CSV, {credentials:"omit", cache:"no-store"});
+    if (!r.ok) return;
+    const linhas = lerCSV(await r.text());
+    if (aplicarPlanilha(linhas)){ store.set("yuny-planilha", JSON.stringify(linhas)); redesenhar(); }
+  } catch {}
+}
 
 
 /* ======================= LÓGICA ======================= */
@@ -632,8 +730,8 @@ function render(){
 /* --- ficha --- */
 function textoCliente(e){
   const [rot] = ESTAGIO[e.estagio];
-  const L = [`*${e.nome}* · ${e.bairro}`, e.end, `${rot}${e.entrega ? " · entrega " + e.entrega : ""}`, "", e.gancho];
-  if (e.tipos.length){ L.push("", "Plantas:"); e.tipos.forEach(t => L.push(`• ${t.d}: ${t.a}`)); }
+  const L = [`*${e.nome}* · ${e.bairro}`, e.end, `${rot}${e.entrega ? " · entrega " + e.entrega : ""}`, ...(e.gancho ? ["", e.gancho] : [])];
+  if (e.tipos.length){ L.push("", "Plantas:"); e.tipos.forEach(t => L.push(`• ${t.d}${t.a ? ": "+t.a : ""}`)); }
   if (e.lojasLista){ L.push("", "Lojas disponíveis:"); e.lojasLista.forEach(l => L.push(`• ${l[0]}: ${l[2]}`)); }
   if (e.destaques?.length){ L.push("", "Destaques:"); e.destaques.forEach(d => L.push(`• ${d}`)); }
   L.push("", "Quer agendar uma visita? Me chama aqui.");
@@ -658,8 +756,8 @@ function abrirFicha(id){
         <div class="fato"><div class="r">Entrega</div><div class="v">${e.estagio==="pronto" ? "Pronto" : esc(e.entrega || "a confirmar")}</div></div>
         <div class="fato"><div class="r">Bairro</div><div class="v">${esc(e.bairro)}</div></div>
       </div>
-      <div class="bloco"><h3>Por que vende</h3><p>${esc(e.gancho)}.</p>
-        ${e.destaques?.length ? `<ul style="margin:8px 0 0;padding-left:20px">${e.destaques.map(d=>`<li>${esc(d)}</li>`).join("")}</ul>` : ""}</div>
+      ${e.gancho || e.destaques?.length ? `<div class="bloco"><h3>Por que vende</h3>${e.gancho ? `<p>${esc(e.gancho)}.</p>` : ""}
+        ${e.destaques?.length ? `<ul style="margin:8px 0 0;padding-left:20px">${e.destaques.map(d=>`<li>${esc(d)}</li>`).join("")}</ul>` : ""}</div>` : ""}
       ${e.tipos.length ? `<div class="bloco"><h3>Plantas</h3><ul class="tipos">${e.tipos.map(t=>`<li><span>${esc(t.d)}</span><span class="a">${esc(t.a)}</span></li>`).join("")}</ul></div>` : ""}
       ${e.lojasLista ? `<div class="bloco"><h3>Operações disponíveis</h3><ul class="tipos">${e.lojasLista.map(l=>`<li><span>${esc(l[0])}<br><small style="color:var(--tinta-suave)">${esc(l[1])}</small></span><span class="a">${esc(l[2])}</span></li>`).join("")}</ul></div>` : ""}
       ${e.lojas ? `<div class="bloco"><h3>Lojas no empreendimento</h3><p>${esc(e.lojas)}</p></div>` : ""}
@@ -738,6 +836,7 @@ function aplicarModo(on){
    Com API_URL preenchido, cadastro e login vão para a aba "Cadastros" (a senha nunca é salva aberta).
    Com API_URL vazio, o portal funciona só neste navegador (modo teste). */
 const API_URL = "https://script.google.com/macros/s/AKfycbz3yPWwZtRLvtGKplhGtejXzvg_mKfSqajpjIg96An98YK-S4uYhUslWFyK_VmOUlKbnA/exec";
+const API_ATIVA = () => API_URL && !PREVIA;
 async function api(acao, dados){
   const r = await fetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({acao, ...dados})});
   if (!r.ok) throw new Error("http "+r.status);
@@ -816,7 +915,7 @@ function montarAcesso(){
     ev.preventDefault();
     const cpf = soDig($("#l-cpf").value), senha = $("#l-senha").value;
     if (!cpfValido(cpf)) return retorno("#r-entrar","CPF inválido. Confira os números.","erro");
-    if (API_URL){
+    if (API_ATIVA()){
       const bt = ev.submitter; if (bt) bt.disabled = true;
       retorno("#r-entrar","Entrando…","ok");
       try {
@@ -840,7 +939,7 @@ function montarAcesso(){
     const ger = document.querySelector('input[name="ger"]:checked')?.value || "sem";
     let ok = true;
     ok = erro("nome", v("nome").split(" ").filter(Boolean).length<2 ? "Informe nome e sobrenome." : "") && ok;
-    ok = erro("cpf", !cpfValido(v("cpf")) ? "CPF inválido. Confira os números." : (!API_URL && usuarios()[soDig(v("cpf"))] ? "Este CPF já tem cadastro. Use a aba Entrar." : "")) && ok;
+    ok = erro("cpf", !cpfValido(v("cpf")) ? "CPF inválido. Confira os números." : (!API_ATIVA() && usuarios()[soDig(v("cpf"))] ? "Este CPF já tem cadastro. Use a aba Entrar." : "")) && ok;
     ok = erro("creci", soDig(v("creci")).length<4 ? "Informe o número do CRECI." : "") && ok;
     ok = erro("whats", soDig(v("whats")).length<10 ? "WhatsApp com DDD." : "") && ok;
     ok = erro("email", !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email")) ? "E-mail inválido." : "") && ok;
@@ -856,7 +955,7 @@ function montarAcesso(){
       gerente: ger, gerenteNome: (GERENTES.find(g=>g.id===ger)||{}).nome || "Não tenho gerente",
       aceite: new Date().toISOString(), senha: await hash(v("senha"))
     };
-    if (API_URL){
+    if (API_ATIVA()){
       const bt = ev.submitter; if (bt) bt.disabled = true;
       retorno("#r-cad","Enviando cadastro…","ok");
       try {
@@ -885,11 +984,12 @@ window.addEventListener("hashchange", rota);
 rota();
 
 montarAcesso();
+sincronizarPlanilha();
 { let u = null; const sess = store.get("yuny-sessao");
   try { u = sess && (sess.startsWith("{") ? JSON.parse(sess) : usuarios()[sess]); } catch {}
   if (u && u.cpf){
     usuario = {cpf:u.cpf, nome:u.nome, gerente:u.gerente||"sem"}; renderSessao();
-    if (API_URL) api("acesso", {cpf:u.cpf}).catch(()=>{});
+    if (API_ATIVA()) api("acesso", {cpf:u.cpf}).catch(()=>{});
   } else { document.body.classList.add("travado"); renderSessao(); } }
 
 </script>
