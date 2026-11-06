@@ -57,7 +57,9 @@ body.modo-cliente .so-corretor{display:none !important}
 /* Barra do gerente */
 .barra-ger{background:#e6f4f3;border-bottom:1px solid #c9e5e3}
 .barra-ger .in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.avatar{width:38px;height:38px;border-radius:50%;background:var(--petroleo);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--petroleo);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;flex:none;position:relative;overflow:hidden}
+.avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gerente .avatar{width:56px;height:56px;font-size:19px}
 .barra-ger .quem{line-height:1.25}
 .barra-ger .quem small{display:block;color:var(--tinta-suave);font-size:13px}
 .barra-ger .quem b{font-size:16px}
@@ -653,10 +655,17 @@ function botaoContato(msg, cls, rotulo){
              : `<button class="${cls}" type="button" data-sheet>${esc(g ? label + " (WhatsApp a definir)" : "Escolher meu gerente")}</button>`;
 }
 function ligarSheet(raiz){ raiz.querySelectorAll("[data-sheet]").forEach(b => b.addEventListener("click", abrirSheet)); }
+/* Foto do gerente: img/time/<id>.jpg (aceita também .jpeg e .png). Sem foto, aparecem as iniciais. */
+function fotoFalhou(img){
+  const ext = ["jpg","jpeg","png"], i = ext.indexOf(img.dataset.ext||"jpg") + 1;
+  if (i < ext.length){ img.dataset.ext = ext[i]; img.src = img.src.replace(/\.[a-z]+$/, "." + ext[i]); }
+  else img.remove();
+}
+const avatar = g => `<span class="avatar" aria-hidden="true">${iniciais(g.nome)}<img src="img/time/${g.id}.jpg" alt="" onerror="fotoFalhou(this)"></span>`;
 function renderGerentes(){
   const g = gerenteAtual;
   $("#barra-ger").innerHTML = `<div class="in">
-    ${g ? `<span class="avatar" aria-hidden="true">${iniciais(g.nome)}</span>
+    ${g ? `${avatar(g)}
       <span class="quem"><small>Seu gerente Yuny</small><b>${esc(g.nome)}</b></span>
       <span class="acoes-ger">
         ${g.tel ? `<a class="btn btn-pri btn-mini" href="${waLink(g,"")}" target="_blank" rel="noopener">WhatsApp</a>` : `<span class="btn btn-mini" aria-disabled="true">WhatsApp a definir</span>`}
@@ -667,7 +676,7 @@ function renderGerentes(){
   </div>`;
   $("#barra-ger [data-trocar]").addEventListener("click", abrirSheet);
   const card = (x, noSheet) => `<div class="gerente ${gerenteAtual && x.id===gerenteAtual.id ? "atual":""}">
-      <div class="topo-g"><span class="avatar" aria-hidden="true">${iniciais(x.nome)}</span>
+      <div class="topo-g">${avatar(x)}
       <div><div class="reg">Gerente de Parcerias</div><div class="nome">${esc(x.nome)}</div></div></div>
       ${x.tel ? `<div class="tel">+${x.tel.slice(0,2)} ${x.tel.slice(2,4)} ${x.tel.slice(4,9)}-${x.tel.slice(9)}</div>` : `<div class="tel">WhatsApp a definir</div>`}
       <button class="btn ${gerenteAtual && x.id===gerenteAtual.id ? "btn-sec" : "btn-pri"}" type="button" data-escolher="${x.id}">${gerenteAtual && x.id===gerenteAtual.id ? "É o meu gerente" : "Este é o meu gerente"}</button>
