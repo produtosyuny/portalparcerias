@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Portal do Corretor Parceiro Yuny: empreendimentos, materiais e contato com os gerentes de Parcerias.">
+<meta name="theme-color" content="#0f3a45">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f3a45'/%3E%3Ctext x='32' y='44' font-family='Georgia,serif' font-size='36' fill='%23fff' text-anchor='middle'%3EY%3C/text%3E%3C/svg%3E">
+<title>Yuny Parcerias — Portal do Corretor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Yuny Parcerias: petróleo + turquesa da marca sobre pedra clara. Vitrine filtrável em cards; ficha em painel lateral; barra "seu gerente" fixa no topo. */
+  --petroleo:#0f3a45;
+  --turquesa:#14a3a6;
+  --pedra:#f4f3ef;
+  --papel:#ffffff;
+  --tinta:#16262b;
+  --tinta-suave:#5b6b70;
+  --linha:#dfe3e1;
+  --ok:#2f7d4f; --ok-bg:#e3f2e8;
+  --obra:#9a6a00; --obra-bg:#fbf0d6;
+  --breve:#6a3fa0; --breve-bg:#efe6f8;
+  --camp:#b4412b; --camp-bg:#fbe7e2;
+  --f-display:"Instrument Serif", Georgia, "Times New Roman", serif;
+  --f-corpo:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--pedra);color:var(--tinta);font-family:var(--f-corpo);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+button,input{font:inherit}
+:focus-visible{outline:3px solid var(--turquesa);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.sr{position:absolute;left:-9999px}
+
+/* Modo cliente esconde o que é só do corretor */
+body.modo-cliente .so-corretor{display:none !important}
+
+/* Topo */
+.topo{background:var(--petroleo);color:#fff}
+.topo-in{max-width:1180px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.marca{display:flex;align-items:baseline;gap:6px;text-decoration:none}
+.marca b{font-weight:700;font-size:26px;letter-spacing:-.5px}
+.marca span{font-size:20px;color:#7fd8d8;font-weight:500}
+.topo nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.topo nav a{color:#dff3f3;text-decoration:none;padding:8px 12px;border-radius:8px;font-weight:600;font-size:15px}
+.topo nav a:hover{background:rgba(255,255,255,.1)}
+.toggle{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:7px 14px;cursor:pointer;font-weight:600;font-size:14px}
+.toggle[aria-pressed="true"]{background:#fff;color:var(--petroleo)}
+
+/* Barra do gerente */
+.barra-ger{background:#e6f4f3;border-bottom:1px solid #c9e5e3}
+.barra-ger .in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--petroleo);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;flex:none}
+.barra-ger .quem{line-height:1.25}
+.barra-ger .quem small{display:block;color:var(--tinta-suave);font-size:13px}
+.barra-ger .quem b{font-size:16px}
+.barra-ger .acoes-ger{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.btn-mini{min-height:40px;padding:8px 14px;font-size:15px;border-radius:10px}
+.aviso{background:#fff7e0;color:#6b4e00;font-size:14px;border-bottom:1px solid #f1e2b3}
+.aviso div{max-width:1180px;margin:0 auto;padding:8px 20px}
+
+main{max-width:1180px;margin:0 auto;padding:0 20px 120px}
+
+/* Destaque */
+.destaque{display:grid;grid-template-columns:1fr 1fr;margin-top:24px;background:var(--petroleo);color:#fff;border-radius:16px;overflow:hidden}
+.destaque .arte{position:relative;min-height:300px;background:
+  linear-gradient(180deg, rgba(11,42,51,0) 35%, rgba(11,42,51,.85) 100%),
+  url("img/quaddra-jesuino.jpg") center 35%/cover no-repeat, #0b2a33;display:flex;align-items:flex-end;padding:28px}
+.destaque .arte .num{font-family:var(--f-display);font-size:72px;text-shadow:0 2px 18px rgba(0,0,0,.35);line-height:.9;color:rgba(255,255,255,.92)}
+.destaque .arte .num small{display:block;font-family:var(--f-corpo);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#a9e3e3;margin-top:10px}
+.destaque .txt{padding:28px;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.destaque h2{font-family:var(--f-display);font-weight:400;font-size:42px;line-height:1.05}
+.destaque p{margin:0;color:#cfe9e9;max-width:46ch}
+
+/* Busca e filtros */
+.painel{margin-top:30px;display:flex;flex-direction:column;gap:14px}
+.painel-cab{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.painel-cab h2,.secao h2{font-family:var(--f-display);font-weight:400;font-size:34px;color:var(--petroleo)}
+.contagem{color:var(--tinta-suave);font-size:15px;font-variant-numeric:tabular-nums}
+.busca{width:100%;padding:14px 16px;border:1px solid var(--linha);border-radius:12px;background:var(--papel);font-size:17px}
+.filtros{display:flex;flex-direction:column;gap:10px}
+.grupo{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grupo .rot{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-suave);min-width:84px}
+.chip{border:1px solid var(--linha);background:var(--papel);color:var(--tinta);padding:9px 14px;border-radius:999px;cursor:pointer;font-weight:500;font-size:15px;min-height:42px}
+.chip[aria-pressed="true"]{background:var(--petroleo);border-color:var(--petroleo);color:#fff}
+.limpar{border:0;background:none;color:var(--turquesa);font-weight:700;cursor:pointer;padding:8px;text-decoration:underline}
+
+/* Cards */
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-top:6px}
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .15s, box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,58,69,.12)}
+.foto{position:relative;aspect-ratio:4/3;background:#cfd8d8;overflow:hidden}
+.foto img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.foto .tipo-arte{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;background:
+  radial-gradient(120% 90% at 10% 110%, rgba(20,163,166,.6), transparent 60%), linear-gradient(160deg,#16505e,#0b2a33)}
+.foto .tipo-arte b{font-family:var(--f-display);font-weight:400;font-size:34px;line-height:1}
+.foto .tipo-arte span{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#a9e3e3;margin-top:6px}
+.foto .bairro-tag{position:absolute;left:10px;top:10px;background:rgba(15,58,69,.88);color:#fff;font-size:12px;font-weight:700;letter-spacing:.06em;padding:4px 9px;border-radius:6px;text-transform:uppercase}
+.foto .camp{position:absolute;right:10px;top:10px;background:var(--camp);color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:6px}
+.card .corpo{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-family:var(--f-display);font-weight:400;font-size:27px;line-height:1.1;color:var(--petroleo)}
+.card .gancho{color:var(--tinta-suave);font-size:15px;margin-top:-4px}
+.card .resumo{font-size:15px}
+.card .comis{font-size:14px;font-weight:700;color:var(--petroleo);background:#e6f4f3;border-radius:8px;padding:6px 10px;align-self:flex-start}
+.card .rodape{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px}
+.card .ver{color:var(--turquesa);font-weight:700;font-size:15px}
+.selo{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+.selo::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.s-pronto{color:var(--ok);background:var(--ok-bg)}
+.s-obra{color:var(--obra);background:var(--obra-bg)}
+.s-breve{color:var(--breve);background:var(--breve-bg)}
+.s-lojas{color:var(--petroleo);background:#e6f4f3}
+.vazio{grid-column:1/-1;background:var(--papel);border:1px dashed var(--linha);border-radius:14px;padding:28px;text-align:center;color:var(--tinta-suave)}
+
+/* Seções */
+.secao{margin-top:48px}
+.secao h2{margin-bottom:14px}
+.tabela-com{background:var(--papel);border:1px solid var(--linha);border-radius:14px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--linha);font-size:16px;vertical-align:top}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--tinta-suave);font-weight:700;background:#fafaf8}
+tr:last-child td{border-bottom:0}
+.nota{font-size:14px;color:var(--tinta-suave);margin-top:10px;max-width:70ch}
+.gerentes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.gerente{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.gerente.atual{border:2px solid var(--turquesa)}
+.gerente .topo-g{display:flex;gap:10px;align-items:center}
+.gerente .reg{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--turquesa)}
+.gerente .nome{font-weight:600;font-size:17px;line-height:1.2}
+.gerente .tel{color:var(--tinta-suave);font-size:14px}
+
+.revendas{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:var(--petroleo);color:#fff;border-radius:16px;padding:24px 26px;margin-top:48px}
+.revendas h2{font-family:var(--f-display);font-weight:400;font-size:32px;margin-top:8px}
+.revendas p{margin:4px 0 0;color:#cfe9e9;max-width:60ch}
+
+/* Botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:12px 18px;border-radius:12px;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;border:2px solid transparent;text-align:center}
+.btn-pri{background:var(--turquesa);color:#fff}
+.btn-pri:hover{background:#0f8d90}
+.btn-sec{background:var(--papel);color:var(--petroleo);border-color:var(--petroleo)}
+.btn-claro{background:#fff;color:var(--petroleo)}
+.btn-fant{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.btn[aria-disabled="true"]{background:#eceeed;color:#8a9699;border-color:#eceeed;cursor:not-allowed}
+
+/* Gestão */
+.gestao{margin-top:48px;background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:6px 18px}
+.gestao summary{cursor:pointer;font-weight:700;color:var(--petroleo);padding:12px 0;font-size:17px}
+.gestao h3{font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-suave);margin:14px 0 8px}
+.gestao ul{margin:0 0 12px;padding-left:20px}
+.gestao li{margin:6px 0;font-size:15px}
+.links-ger{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.link-ger{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:15px}
+.link-ger code{background:var(--pedra);padding:6px 10px;border-radius:8px;font-size:13px;word-break:break-all}
+
+.flutuante{position:fixed;right:18px;bottom:18px;z-index:20;box-shadow:0 8px 24px rgba(15,58,69,.3)}
+
+/* Ficha */
+.fundo{position:fixed;inset:0;background:rgba(10,30,36,.55);z-index:40;display:none}
+.fundo.aberta{display:block}
+.ficha{position:fixed;z-index:50;top:0;right:0;height:100%;width:min(720px,100%);background:var(--pedra);overflow-y:auto;display:none;box-shadow:-10px 0 40px rgba(0,0,0,.2)}
+.ficha.aberta{display:block}
+.ficha .capa{position:relative}
+.ficha .capa .foto{aspect-ratio:16/9}
+.ficha .capa .camp{display:none}
+.fechar{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.95);border:0;border-radius:999px;min-width:48px;height:48px;padding:0 16px;font-weight:700;cursor:pointer;font-size:16px;color:var(--petroleo);z-index:2}
+.ficha .cont{padding:22px 22px 40px;display:flex;flex-direction:column;gap:18px}
+.ficha h2{font-family:var(--f-display);font-weight:400;font-size:44px;line-height:1.05;color:var(--petroleo)}
+.ficha .end{color:var(--tinta-suave);margin-top:4px}
+.fatos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.fato{background:var(--papel);border:1px solid var(--linha);border-radius:12px;padding:12px 14px}
+.fato .r{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-suave);font-weight:700}
+.fato .v{font-size:17px;font-weight:600;margin-top:2px}
+.bloco{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:16px 18px}
+.bloco h3{font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-suave);margin-bottom:8px}
+.bloco p{margin:0}
+.tipos{list-style:none;margin:0;padding:0}
+.tipos li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--linha);font-variant-numeric:tabular-nums}
+.tipos li:last-child{border-bottom:0}
+.tipos .a{font-weight:700;text-align:right}
+.com{border-left:5px solid var(--turquesa)}
+.camp-bloco{border-left:5px solid var(--camp)}
+.mats{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.mats .btn{min-height:46px;font-size:15px}
+.acoes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.acoes .full{grid-column:1/-1}
+.copiado{font-size:14px;color:var(--ok);font-weight:600;min-height:20px}
+.texto-cliente{width:100%;min-height:180px;border:1px solid var(--linha);border-radius:12px;padding:12px;font:inherit;font-size:15px;display:none}
+.tag-val{display:inline-block;background:var(--camp-bg);color:var(--camp);font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle;text-transform:none;letter-spacing:0}
+
+/* Sheet gerentes */
+.sheet{position:fixed;z-index:60;left:50%;bottom:0;transform:translateX(-50%);width:min(620px,100%);max-height:85%;overflow-y:auto;background:var(--papel);border-radius:18px 18px 0 0;padding:20px 20px 28px;display:none;box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+.sheet.aberta{display:block}
+.sheet h3{font-family:var(--f-display);font-weight:400;font-size:30px;color:var(--petroleo);margin-bottom:4px}
+.sheet p{margin:0 0 14px;color:var(--tinta-suave);font-size:15px}
+
+
+/* ===== Acesso (login / cadastro) ===== */
+body.travado main, body.travado .barra-ger, body.travado #flutuante, body.travado .aviso{display:none !important}
+#acesso{display:none;min-height:calc(100vh - 66px);padding:32px 20px 60px;background:
+  radial-gradient(80% 60% at 0% 100%, rgba(20,163,166,.18), transparent 60%), var(--pedra)}
+body.travado #acesso{display:block}
+.acesso-in{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:start}
+.acesso-intro h1{font-family:var(--f-display);font-weight:400;font-size:46px;line-height:1.05;color:var(--petroleo)}
+.acesso-intro p{color:var(--tinta-suave);max-width:42ch}
+.acesso-intro ul{padding-left:20px;color:var(--tinta);margin:14px 0 0}
+.acesso-intro li{margin:6px 0}
+.cartao{background:var(--papel);border:1px solid var(--linha);border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(15,58,69,.08)}
+.abas{display:grid;grid-template-columns:1fr 1fr;background:var(--pedra);border-radius:12px;padding:4px;margin-bottom:18px}
+.abas button{border:0;background:transparent;padding:12px;border-radius:9px;font-weight:700;font-size:16px;color:var(--tinta-suave);cursor:pointer}
+.abas button[aria-selected="true"]{background:var(--papel);color:var(--petroleo);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.form{display:flex;flex-direction:column;gap:14px}
+.form[hidden]{display:none}
+body.travado .topo nav a, body.travado #modo{display:none}
+.campo{display:flex;flex-direction:column;gap:6px}
+.campo label,.campo .leg{font-weight:600;font-size:15px}
+.campo input[type=text],.campo input[type=password],.campo input[type=email],.campo input[type=tel]{width:100%;padding:13px 14px;border:1px solid var(--linha);border-radius:10px;font-size:17px;background:#fff}
+.campo input.erro{border-color:var(--camp);background:#fff8f6}
+.campo .dica{font-size:13px;color:var(--tinta-suave)}
+.campo .msg-erro{font-size:13px;color:var(--camp);font-weight:600;min-height:0}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opcoes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opcao{display:flex;gap:10px;align-items:center;border:1px solid var(--linha);border-radius:10px;padding:12px;cursor:pointer;font-size:15px;background:#fff}
+.opcao:has(input:checked){border-color:var(--turquesa);background:#eef8f8;font-weight:600}
+.opcao input{width:18px;height:18px;accent-color:var(--turquesa)}
+.ger-opcoes{grid-template-columns:1fr}
+.condicional{display:none;flex-direction:column;gap:12px;padding:14px;border-radius:12px;background:#f2f8f8;border:1px dashed #b8dcdb}
+.condicional.on{display:flex}
+.aceite{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.aceite input{width:20px;height:20px;margin-top:2px;accent-color:var(--turquesa)}
+.linkzinho{background:none;border:0;padding:0;color:var(--turquesa);font-weight:700;text-decoration:underline;cursor:pointer;font:inherit}
+.retorno{font-size:15px;padding:12px 14px;border-radius:10px;display:none}
+.retorno.on{display:block}
+.retorno.erro{background:var(--camp-bg);color:var(--camp)}
+.retorno.ok{background:var(--ok-bg);color:var(--ok)}
+.pular{margin-top:14px;text-align:center;font-size:14px;color:var(--tinta-suave)}
+.termos{position:fixed;z-index:70;inset:auto 0 0 0;margin:auto;bottom:0;width:min(620px,100%);max-height:80%;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:22px;display:none;box-shadow:0 -10px 40px rgba(0,0,0,.25)}
+.termos.on{display:block}
+.termos h3{font-family:var(--f-display);font-weight:400;font-size:28px;color:var(--petroleo);margin-bottom:8px}
+.termos p{font-size:15px;color:var(--tinta)}
+.sair{margin-left:6px}
+@media (max-width:820px){.acesso-in{grid-template-columns:1fr}.acesso-intro h1{font-size:36px}.duas,.opcoes{grid-template-columns:1fr}}
+
+footer{color:var(--tinta-suave);font-size:14px;margin-top:40px}
+
+@media (max-width:760px){
+  .destaque{grid-template-columns:1fr}
+  .destaque .arte{min-height:150px}
+  .destaque .arte .num{font-size:64px}
+  .destaque h2{font-size:34px}
+  .fatos{gap:6px}.fato{padding:10px}.fato .v{font-size:15px}
+  .grupo .rot{min-width:100%}
+  .ficha h2{font-size:36px}
+  .barra-ger .acoes-ger{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="topo-in">
+    <a class="marca" href="#inicio" aria-label="Yuny Parcerias, início"><b>yuny</b><span>parcerias</span></a>
+    <nav aria-label="Seções">
+      <a href="#empreendimentos">Empreendimentos</a>
+      <a href="#comissoes" class="so-corretor">Comissões</a>
+      <a href="#gerentes">Gerentes</a>
+      <button class="toggle" type="button" id="modo" aria-pressed="false" title="Esconde comissões e campanhas para mostrar a tela ao cliente">Modo cliente</button>
+    </nav>
+  </div>
+</header>
+
+<div class="barra-ger" id="barra-ger"></div>
+
+
+<section id="acesso" aria-labelledby="acesso-tit">
+  <div class="acesso-in">
+    <div class="acesso-intro">
+      <h1 id="acesso-tit">Portal de Parcerias Yuny</h1>
+      <p>Área exclusiva para corretores parceiros. Entre com seu CPF e senha ou faça seu cadastro em 2 minutos.</p>
+      <ul>
+        <li>Tabelas, books, plantas e vídeos de todos os empreendimentos</li>
+        <li>Comissões e campanhas ativas</li>
+        <li>Contato direto com o seu gerente Yuny</li>
+      </ul>
+    </div>
+    <div class="cartao">
+      <div class="abas" role="tablist">
+        <button type="button" role="tab" id="aba-entrar" aria-selected="true" aria-controls="form-entrar">Entrar</button>
+        <button type="button" role="tab" id="aba-cad" aria-selected="false" aria-controls="form-cad">Criar cadastro</button>
+      </div>
+
+      <form class="form" id="form-entrar" novalidate>
+        <div class="campo"><label for="l-cpf">CPF</label><input type="text" id="l-cpf" inputmode="numeric" autocomplete="username" placeholder="000.000.000-00"></div>
+        <div class="campo"><label for="l-senha">Senha</label><input type="password" id="l-senha" autocomplete="current-password"></div>
+        <div class="retorno" id="r-entrar" aria-live="polite"></div>
+        <button class="btn btn-pri" type="submit">Entrar</button>
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:15px">
+          <button type="button" class="linkzinho" id="esqueci">Esqueci minha senha</button>
+          <button type="button" class="linkzinho" id="ir-cad">Ainda não tenho cadastro</button>
+        </div>
+      </form>
+
+      <form class="form" id="form-cad" novalidate hidden>
+        <div class="campo"><label for="c-nome">Nome completo</label><input type="text" id="c-nome" autocomplete="name"><span class="msg-erro" id="e-nome"></span></div>
+        <div class="duas">
+          <div class="campo"><label for="c-cpf">CPF</label><input type="text" id="c-cpf" inputmode="numeric" placeholder="000.000.000-00"><span class="msg-erro" id="e-cpf"></span></div>
+          <div class="campo"><label for="c-creci">CRECI</label><input type="text" id="c-creci" placeholder="Ex.: 123456-F"><span class="msg-erro" id="e-creci"></span></div>
+        </div>
+        <div class="duas">
+          <div class="campo"><label for="c-whats">WhatsApp</label><input type="tel" id="c-whats" inputmode="numeric" placeholder="(11) 90000-0000"><span class="msg-erro" id="e-whats"></span></div>
+          <div class="campo"><label for="c-email">E-mail</label><input type="email" id="c-email" autocomplete="email"><span class="msg-erro" id="e-email"></span></div>
+        </div>
+        <div class="campo"><span class="leg">Como você atua?</span>
+          <div class="opcoes" role="radiogroup" aria-label="Como você atua">
+            <label class="opcao"><input type="radio" name="atua" value="pf" checked> Autônomo (PF)</label>
+            <label class="opcao"><input type="radio" name="atua" value="imob"> Trabalho em imobiliária</label>
+          </div>
+        </div>
+        <div class="condicional" id="bloco-imob">
+          <div class="campo"><label for="c-imob">Qual imobiliária?</label><input type="text" id="c-imob" placeholder="Nome da imobiliária"><span class="msg-erro" id="e-imob"></span></div>
+          <div class="campo"><label for="c-cnpj">CNPJ da imobiliária <span class="dica">(opcional)</span></label><input type="text" id="c-cnpj" inputmode="numeric" placeholder="00.000.000/0000-00"></div>
+        </div>
+        <div class="campo"><span class="leg">Seu gerente Yuny</span>
+          <span class="dica">Escolha quem já te atende. Se ainda não tem, marque a última opção.</span>
+          <div class="opcoes ger-opcoes" id="c-gerentes" role="radiogroup" aria-label="Seu gerente Yuny"></div>
+        </div>
+        <div class="duas">
+          <div class="campo"><label for="c-senha">Crie uma senha</label><input type="password" id="c-senha" autocomplete="new-password"><span class="dica">Mínimo de 6 caracteres</span><span class="msg-erro" id="e-senha"></span></div>
+          <div class="campo"><label for="c-senha2">Repita a senha</label><input type="password" id="c-senha2" autocomplete="new-password"><span class="msg-erro" id="e-senha2"></span></div>
+        </div>
+        <label class="aceite"><input type="checkbox" id="c-aceite"> <span>Li e aceito os <button type="button" class="linkzinho" id="ver-termos">termos de uso e de tratamento de dados</button> do Portal de Parcerias Yuny.</span></label>
+        <span class="msg-erro" id="e-aceite"></span>
+        <div class="retorno" id="r-cad" aria-live="polite"></div>
+        <button class="btn btn-pri" type="submit">Criar cadastro e entrar</button>
+      </form>
+      <div class="pular"><button type="button" class="linkzinho" id="pular">Entrar sem cadastro</button></div>
+    </div>
+  </div>
+</section>
+
+<div class="termos" id="termos" role="dialog" aria-modal="true" aria-labelledby="termos-tit">
+  <h3 id="termos-tit">Termos de uso (rascunho)</h3>
+  <p>Ao se cadastrar, você autoriza a Yuny Incorporadora a usar seu nome, CPF, CRECI, WhatsApp e e-mail para liberar o acesso ao portal, registrar seus acessos aos materiais e entrar em contato sobre empreendimentos e campanhas.</p>
+  <p>Comissões, tabelas e condições comerciais são de uso exclusivo do corretor parceiro e não devem ser repassadas ao cliente final.</p>
+  <p>Você pode pedir a exclusão do seu cadastro a qualquer momento pelo seu gerente.</p>
+  <p class="dica" style="color:var(--camp)">Texto provisório: validar com o jurídico.</p>
+  <button class="btn btn-sec" type="button" id="fechar-termos" style="width:100%">Fechar</button>
+</div>
+
+<main id="inicio">
+  <section class="destaque" aria-labelledby="dest-tit">
+    <div class="arte"><div class="num">326<br>a 609 m²<small>1 apartamento por andar · Itaim Bibi</small></div></div>
+    <div class="txt">
+      <span class="selo s-breve" style="align-self:flex-start">Pré-lançamento</span>
+      <h2 id="dest-tit">Quaddra Jesuíno Arruda</h2>
+      <p>Torre única na Rua Jesuíno Arruda, 520. Apartamentos de 326 e 387 m², gardens e coberturas duplex, 4 suítes e quadra de tênis de saibro. Cadastre o interesse do seu cliente com o seu gerente e receba book e tabela assim que forem liberados.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn-claro" href="#e-quaddra-jesuino">Ver detalhes</a>
+        <span id="hero-acao"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="painel" id="empreendimentos" aria-labelledby="emp-tit">
+    <div class="painel-cab">
+      <h2 id="emp-tit">Empreendimentos</h2>
+      <span class="contagem" id="contagem" aria-live="polite"></span>
+    </div>
+    <label for="busca" class="sr">Buscar empreendimento, bairro ou rua</label>
+    <input class="busca" id="busca" type="search" placeholder="Buscar por nome, bairro ou rua">
+    <div class="filtros" id="filtros"></div>
+    <div class="grade" id="grade"></div>
+  </section>
+
+  <section class="revendas" aria-labelledby="rev-tit">
+    <div>
+      <span class="selo s-obra" style="background:#fff3d6">Em reestruturação</span>
+      <h2 id="rev-tit">Yuny Revendas</h2>
+      <p>Unidades de revenda nos empreendimentos Yuny. O canal está sendo reorganizado: por enquanto, consulte a lista atual ou fale com seu gerente.</p>
+    </div>
+    <a class="btn btn-claro" href="https://bit.ly/revendasyuny" target="_blank" rel="noopener">Ver revendas</a>
+  </section>
+
+  <section class="secao so-corretor" id="comissoes" aria-labelledby="com-tit">
+    <h2 id="com-tit">Comissões</h2>
+    <div class="tabela-com">
+      <table>
+        <thead><tr><th>Empreendimento</th><th>CRECI PJ</th><th>CRECI PF</th></tr></thead>
+        <tbody id="tab-com"></tbody>
+      </table>
+    </div>
+    <p class="nota">Condições sujeitas à proposta aprovada. Confirme com seu gerente antes de apresentar ao cliente.</p>
+  </section>
+
+  <section class="secao" id="gerentes" aria-labelledby="ger-tit">
+    <h2 id="ger-tit">Gerentes de Parcerias Yuny</h2>
+    <div class="gerentes" id="lista-gerentes"></div>
+    <p class="nota">Todos os gerentes atendem todos os empreendimentos. Escolha o seu: o portal guarda a escolha e todos os botões de contato passam a falar com ele.</p>
+  </section>
+
+  <details class="gestao so-corretor" id="gestao">
+    <summary>Gestão de Parcerias: link de cada gerente</summary>
+    <h3>Link de cada gerente</h3>
+    <p class="nota" style="margin-top:0">O gerente envia o próprio link às imobiliárias dele. Quem entra por ele já vê esse gerente como contato.</p>
+    <div class="links-ger" id="links-ger"></div>
+      </details>
+
+  <footer>Yuny Parcerias · Dados mantidos pelo time de Parcerias.</footer>
+</main>
+
+<div id="flutuante"></div>
+
+<div class="fundo" id="fundo"></div>
+<article class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="ficha-tit"></article>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-tit">
+  <h3 id="sheet-tit">Escolha seu gerente</h3>
+  <p>O portal lembra a sua escolha neste aparelho.</p>
+  <div class="gerentes" id="sheet-gerentes"></div>
+  <button class="btn btn-sec" type="button" id="fechar-sheet" style="width:100%;margin-top:14px">Fechar</button>
+</div>
+
+<script>
+/* ======================= DADOS =======================
+   No portal final, tudo isto vem da planilha de Parcerias. */
+
+const GERENTES = [
+  {id:"alberto", nome:"Alberto Monteiro", tel:"5511996110179"},
+  {id:"antonela", nome:"Antonela Vieira", tel:"5511940331802"},
+  {id:"belluzzi", nome:"Belluzzi", tel:"5511963559457"},
+  {id:"elano", nome:"Elano", tel:"5511957924929"},
+  {id:"peterson", nome:"Peterson Silveira", tel:"5511932082828"},
+  {id:"ricardo", nome:"Ricardo", tel:"5511953181448"}
+];
+
+const EMPS = [
+  {id:"quaddra-jesuino", tour:"https://quaddra-jesuino.touchapp.com.br/", nome:"Quaddra Jesuíno Arruda", bairro:"Itaim Bibi", end:"Rua Jesuíno Arruda, 520", estagio:"breve",
+   gancho:"Torre única, 1 apartamento por andar", perfis:["alto"], img:"quaddra-jesuino",
+   tipos:[{d:"Apartamentos · 4 suítes",a:"326 e 387 m²",t:"4s"},{d:"Gardens",a:"349 e 478 m²",t:"garden"},{d:"Coberturas duplex",a:"552 e 609 m²",t:"garden"}],
+   destaques:["Quadra de tênis de saibro oficial","1 apartamento por andar"],
+   com:null, mats:[], pagina:"quaddra-jesuino"},
+  {id:"quaddra-lorena", tour:"https://quaddra.touchapp.com.br/catalogo.html", nome:"Quaddra Lorena", bairro:"Jardins", end:"Alameda Lorena, 70", estagio:"obra",
+   gancho:"Maior terreno dos Jardins (5.414 m²)", perfis:["alto"], img:"quaddra-lorena",
+   tipos:[{d:"Apartamentos · 4 suítes, 4 vagas",a:"300 e 387 m²",t:"4s"},{d:"Gardens · 4 suítes, 4 vagas",a:"467 e 585 m²",t:"garden"},{d:"Coberturas · 4 suítes, 4 ou 5 vagas",a:"546 e 713 m²",t:"garden"}],
+   destaques:["Apenas 56 residências em 3 torres","Quadra de saibro oficial e piscina coberta de 25 m","Spa com crioterapia e academia Technogym"],
+   com:{pj:"4%",pf:"4%"}, lojas:"2 operações · 352,63 a 1.664,95 m²",
+   mats:[["Book do cliente","https://drive.google.com/file/d/1qfLmJb-4IpUrVIjpJ-Rf6lPIhiABItEA/view"],["Plantas","https://drive.google.com/drive/folders/10NQs_r7kFq1nU4rbLKWp1pFB8zh4_w0O"],["Treinamento","https://drive.google.com/file/d/1O3OR4taiapT0ZIZblO0yN4BfsJPsvnB0/view"],["Imagens","https://drive.google.com/drive/folders/1FGdKGidR0SFAS5CteaXFdtLGGxJKlfS7"],["Vídeos","https://drive.google.com/drive/folders/1hWs_ia5PoqikI7PnUuNQwhJedb64tXUv"],["Decorado (fotos)","https://drive.google.com/drive/folders/1TQVT524gS1VH_NZEubphmLMzq94xiEMd"],["Pasta completa","https://drive.google.com/drive/folders/1YU0OFGbNh5kjokR_02X2zxzlYZPkabAU"]],
+   pagina:"quaddra-lorena-jardins"},
+  {id:"155-jeronimo", tour:"https://155jeronimo.touchapp.com.br/catalogo.html", nome:"155 Jerônimo", bairro:"Itaim Bibi", end:"Rua Jerônimo da Veiga, 155", estagio:"pronto",
+   gancho:"Pé-direito duplo no Itaim", perfis:["alto","pronto"], img:"155-jeronimo", campanha:"12% OFF",
+   tipos:[{d:"Apartamentos",a:"73, 87 e 90 m²",t:"2d"},{d:"Apartamentos pé-direito duplo · 2 ou 3 suítes",a:"134 e 137 m²",t:"3d"},{d:"Coberturas duplex",a:"209, 276 e 340 m²",t:"garden"}],
+   destaques:["Piscina coberta aquecida com raia de 25 m","58 unidades em 22 pavimentos"],
+   com:{pj:"4%",pf:"3%"}, lojas:"4 lojas · 130,69 a 465,3 m²",
+   mats:[["Book","https://drive.google.com/drive/folders/1k2snJfgzuRTRtnjWq6ywoTATSJkQ1YUF"],["Vídeo","https://drive.google.com/file/d/1V077T_nGk-iwEYDkCMdlBlXNzs-cunNa/view"],["Treinamento","https://drive.google.com/file/d/1qXKLkoJZ2UHNN9hMLaQP0sF0dF8UGxhV/view"],["Plantas","https://drive.google.com/drive/folders/1_nrHL1iIsPigp2riQREVb3Wp_H-zsbj3"],["Imagens","https://drive.google.com/drive/folders/10PstCdoMfiat6LnEnuH9xw9SeKyfa1I5"],["Pasta completa","https://drive.google.com/drive/folders/1Ar3VcfTmuVgAtipUQO-RYaEfmKeNHQqI"]],
+   pagina:"155-jeronimo-itaim-bibi"},
+  {id:"esquina-jardyn", tour:"https://esquinajardyn.touchapp.com.br/catalogo.html", nome:"Esquina Jardyn", bairro:"Jardins", end:"Alameda Franca, 1.166", estagio:"pronto",
+   gancho:"3 quadras da Oscar Freire, esquina com a Augusta", perfis:["pronto"], img:"esquina-jardyn", campanha:"Até 15% OFF",
+   tipos:[{d:"2 dorms. · 1 vaga",a:"70 m²",t:"2d"},{d:"3 dorms.",a:"91 m²",t:"3d"},{d:"3 dorms. · 2 vagas",a:"132 m²",t:"3d"}],
+   destaques:["2 rooftops de lazer","Academia Technogym"],
+   com:{pj:"4%",pf:"3%"}, lojas:"2 lojas · 326,58 a 570,97 m²",
+   mats:[["Plantas","https://drive.google.com/file/d/1Mw-hke2p_toU2KUCXhAvH2-B1kIFBGzA/view"],["Vídeo","https://drive.google.com/file/d/1Q6F3u-zFLxKRH2amRXHEOmMXezzJs2v-/view"],["Treinamento","https://drive.google.com/file/d/1cAPH-rZU76PprUWAHhmKtaPIzBF07NqX/view"],["Imagens","https://drive.google.com/drive/folders/1pl8749U93ugzcvCsZ-nRpt17-Z9H2Mjv"],["Pasta completa","https://drive.google.com/drive/folders/1o63CrCXKMAF1iKAOD6ZyzL79vJfEJjpC"]],
+   pagina:"esquina-jardyn-jardins"},
+  {id:"1125-joaquim", tour:"https://joaquim1125.touchapp.com.br/catalogo.html", nome:"1125 Joaquim", bairro:"Itaim Bibi", end:"Rua Joaquim Floriano, 1.125", estagio:"pronto",
+   gancho:"Ao lado da Faria Lima", perfis:["alto","pronto"], img:"1125-joaquim", campanha:"Última unidade",
+   tipos:[{d:"3 suítes · 2 vagas",a:"147 m²",t:"3d"}],
+   destaques:["Ponto de recarga para carro elétrico em cada unidade","Health & Wellness"],
+   com:{pj:"4%",pf:"3%"},
+   mats:[["Tabela","https://drive.google.com/file/d/1YJtKHEq8sYhVyfxr1b108KukHE24NzUw/view"],["Book","https://drive.google.com/drive/folders/1w9wQQfh0W6pTucBJ2pASN1-L4xziU2X4"],["FAQ e ficha técnica","https://drive.google.com/drive/folders/1OeTAwydBJKFDGzjUVcUyVBlZn9bUM0LC"],["Plantas","https://drive.google.com/drive/folders/1dws078wmAy0l6m_L_MZPWdZsaJT3MJl2"],["Imagens","https://drive.google.com/drive/folders/1looC9MbatQxkbZWsAWM0blnjofHcb-UT"],["Vídeos","https://drive.google.com/drive/folders/1ze7pDwLBf_6EowWAOUlUOp2QqsrNF-oC"],["Pasta completa","https://drive.google.com/drive/folders/1iS5vsksw0-0xw70SO0f5XeRQQyWsgCRb"]],
+   pagina:"1125-joaquim-itaim-bibi"},
+  {id:"uape", tour:"https://uapehigienopolis.touchapp.com.br/catalogo.html", nome:"Uapé", bairro:"Higienópolis", end:"Rua Pará, 210", estagio:"obra", entrega:"2026",
+   gancho:"No tradicional Higienópolis", perfis:["alto"], img:"uape",
+   tipos:[{d:"Boutique studios",a:"25 a 51 m²",t:"studio"},{d:"3 suítes",a:"167 a 207 m²",t:"3d"}],
+   destaques:["Arquitetura Aflalo/Gasperini","Torre única, térreo + 25 pavimentos"],
+   com:{pj:"4%",pf:"3%"}, lojas:"1 loja · 503,75 m² (Av. Angélica)",
+   mats:[["Vídeo","https://drive.google.com/file/d/15MCFuBE3f4tH6alBQBqy4ISZsp0oRsMG/view"],["Plantas","https://drive.google.com/drive/folders/184bT0p-lKlsMBo4qzRRQQeFEScqQ-Ui-"],["Imagens","https://drive.google.com/drive/folders/1XaNwANQFjv00iznVoluTlFrzJr3EVb5C"],["Pasta completa","https://drive.google.com/drive/folders/1Gd_o7wsTmF5DFH80SVPQkGAngx8w9CLh"]],
+   pagina:"uape-higienopolis"},
+  {id:"177-jeronimo", tour:"https://177jeronimo.touchapp.com.br/catalogo.html", nome:"177 Jerônimo", bairro:"Itaim Bibi", end:"Rua Jerônimo da Veiga, 177", estagio:"obra",
+   gancho:"Novo ícone do Itaim, no futuro boulevard gastronômico", perfis:["alto","invest"], img:"177-jeronimo", campanha:"Alta comissão",
+   tipos:[{d:"Boutique apartments",a:"a partir de 64 m²",t:"1d"},{d:"Apartamentos · 1 a 3 suítes",a:"64 a 182 m²",t:"3d"},{d:"Unidades especiais (garden, duplex, penthouse)",a:"até 182 m²",t:"garden"}],
+   destaques:["Rua que vai receber boulevard gastronômico"],
+   com:{pj:"4%",pf:"3%"}, lojas:"2 lojas · metragem sob consulta",
+   mats:[["Plantas","https://drive.google.com/drive/folders/11YAJGB-OWJLFEXervtywM6HDtp4p9xfO"],["Imagens","https://drive.google.com/drive/folders/1r3DNIQ9iBK8Nsjjv-KA3KTEkNoSO7hHj"],["Vídeos","https://drive.google.com/drive/folders/1wBOPrvHnv85lnsqDFgkvUG861JFdvW4S"],["Pasta completa","https://drive.google.com/drive/folders/1zz7eDUPejUEJsbgdB1_irrXMPCrpiUIL"]],
+   pagina:"177-jeronimo-itaim-bibi"},
+  {id:"zip-brooklin", nome:"Zip Brooklin", bairro:"Brooklin", end:"Av. Dr. Chucri Zaidan, 111", estagio:"pronto",
+   gancho:"Studio para investimento no eixo Berrini–Chucri Zaidan", perfis:["invest"], img:"zip-brooklin",
+   tipos:[{d:"Studio",a:"24 m²",t:"studio"}],
+   destaques:["Perfil renda e liquidez"],
+   com:null, lojas:"1 loja · 223,57 m²",
+   mats:[["Vídeo","https://www.youtube.com/watch?v=xRMfuYXBtVs"],["Plantas","https://drive.google.com/drive/folders/17o1A4roIhoDrTTQsPZA1losTkjuMJanH"],["Imagens","https://drive.google.com/drive/folders/1H-Lm4y4vVMdDGQ0AxoylJMscYZQoycw5"],["Pasta completa","https://drive.google.com/drive/folders/1Rmii_wDSPVqcsbOCCd64Gr9b-uuaEXP8"]],
+   pagina:"zip-brooklin"},
+  {id:"lojas", nome:"Lojas Yuny", bairro:"Várias regiões", end:"18 operações em 9 empreendimentos", estagio:"lojas",
+   gancho:"Fachadas ativas para comércio e alimentação", perfis:["invest","lojas"], img:null, arte:"18 operações", arteSub:"em 9 empreendimentos", campanha:"Até 8% + bônus",
+   tipos:[], lojasLista:[
+     ["Quaddra Lorena · Jardins","2 operações","352,63 a 1.664,95 m²"],["155 Jerônimo · Itaim","4 lojas","130,69 a 465,3 m²"],["177 Jerônimo · Itaim","2 lojas","sob consulta"],
+     ["Esquina Jardyn · Jardins","2 lojas","326,58 a 570,97 m²"],["Camino · Alto da Boa Vista","2 lojas (residencial 100% vendido)","95,28 a 950,4 m²"],["Uapé · Av. Angélica","1 loja","503,75 m²"],
+     ["Zip Brooklin · Brooklin","1 loja","223,57 m²"],["Uwin Brooklin · Av. Santo Amaro","2 lojas","101,49 a 114,85 m²"],["Organy · Vila Clementino","2 lojas (residencial 100% vendido)","sob consulta"]],
+   com:{pj:"até 8% + bônus",pf:"até 8% + bônus"}, mats:[], pagina:"lojas-yuny"}
+];
+
+
+/* ======================= LÓGICA ======================= */
+const ESTAGIO = {breve:["Pré-lançamento","s-breve"], obra:["Em obras","s-obra"], pronto:["Pronto","s-pronto"], lojas:["Lojas","s-lojas"]};
+const TIPOS = {studio:"Studio", "1d":"1 dorm.", "2d":"2 dorms.", "3d":"3 dorms.", "4s":"4 suítes", garden:"Garden/Cobertura"};
+const PERFIS = {alto:"Alto padrão", pronto:"Pronto para morar", invest:"Investimento e renda", lojas:"Lojas"};
+const BAIRROS = [...new Set(EMPS.map(e=>e.bairro).filter(b=>b!=="Várias regiões"))];
+const FILTROS = [
+  {chave:"bairro", rot:"Bairro", ops:BAIRROS.map(b=>[b,b])},
+  {chave:"estagio", rot:"Estágio", ops:[["breve","Pré-lançamento"],["obra","Em obras"],["pronto","Pronto"]]},
+  {chave:"tipo", rot:"Planta", ops:Object.entries(TIPOS)},
+  {chave:"perfil", rot:"Perfil", ops:Object.entries(PERFIS)}
+];
+const estado = {busca:"", bairro:new Set(), estagio:new Set(), tipo:new Set(), perfil:new Set()};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const semAcento = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+const tiposDe = e => new Set(e.tipos.flatMap(t=>[t.t,t.t2].filter(Boolean)));
+const iniciais = n => n.split(" ").filter(Boolean).slice(0,2).map(p=>p[0]).join("").toUpperCase();
+const store = {get(k){try{return localStorage.getItem(k)}catch{return null}}, set(k,v){try{localStorage.setItem(k,v)}catch{}}};
+
+/* --- gerente atual --- */
+let gerenteAtual = GERENTES.find(g => g.id === store.get("yuny-gerente")) || null;
+function waLink(g, msg){
+  if (!g || !g.tel) return null;
+  const txt = `Olá ${g.nome.split(" ")[0]}, vim pelo Portal Yuny Parcerias. ${msg||""}`.trim();
+  return `https://wa.me/${g.tel}?text=${encodeURIComponent(txt)}`;
+}
+function definirGerente(id){
+  gerenteAtual = GERENTES.find(g=>g.id===id) || null;
+  if (gerenteAtual) store.set("yuny-gerente", gerenteAtual.id);
+  renderGerentes();
+}
+function botaoContato(msg, cls, rotulo){
+  const g = gerenteAtual, url = waLink(g, msg);
+  const label = rotulo || (g ? "Falar com " + g.nome.split(" ")[0] : "Falar com gerente");
+  return url ? `<a class="${cls}" href="${url}" target="_blank" rel="noopener">${esc(label)}</a>`
+             : `<button class="${cls}" type="button" data-sheet>${esc(g ? label + " (WhatsApp a definir)" : "Escolher meu gerente")}</button>`;
+}
+function ligarSheet(raiz){ raiz.querySelectorAll("[data-sheet]").forEach(b => b.addEventListener("click", abrirSheet)); }
+function renderGerentes(){
+  const g = gerenteAtual;
+  $("#barra-ger").innerHTML = `<div class="in">
+    ${g ? `<span class="avatar" aria-hidden="true">${iniciais(g.nome)}</span>
+      <span class="quem"><small>Seu gerente Yuny</small><b>${esc(g.nome)}</b></span>
+      <span class="acoes-ger">
+        ${g.tel ? `<a class="btn btn-pri btn-mini" href="${waLink(g,"")}" target="_blank" rel="noopener">WhatsApp</a>` : `<span class="btn btn-mini" aria-disabled="true">WhatsApp a definir</span>`}
+        <button class="btn btn-sec btn-mini" type="button" data-trocar>Trocar gerente</button>
+      </span>`
+    : `<span class="quem"><b>Atendimento geral Yuny Parcerias</b><small>Você ainda não tem gerente. Escolha um quando quiser: todos os contatos passam a ir direto para ele.</small></span>
+      <span class="acoes-ger"><button class="btn btn-pri btn-mini" type="button" data-trocar>Escolher gerente</button></span>`}
+  </div>`;
+  $("#barra-ger [data-trocar]").addEventListener("click", abrirSheet);
+  const card = (x, noSheet) => `<div class="gerente ${gerenteAtual && x.id===gerenteAtual.id ? "atual":""}">
+      <div class="topo-g"><span class="avatar" aria-hidden="true">${iniciais(x.nome)}</span>
+      <div><div class="reg">Gerente de Parcerias</div><div class="nome">${esc(x.nome)}</div></div></div>
+      ${x.tel ? `<div class="tel">+${x.tel.slice(0,2)} ${x.tel.slice(2,4)} ${x.tel.slice(4,9)}-${x.tel.slice(9)}</div>` : `<div class="tel">WhatsApp a definir</div>`}
+      <button class="btn ${gerenteAtual && x.id===gerenteAtual.id ? "btn-sec" : "btn-pri"}" type="button" data-escolher="${x.id}">${gerenteAtual && x.id===gerenteAtual.id ? "É o meu gerente" : "Este é o meu gerente"}</button>
+    </div>`;
+  $("#lista-gerentes").innerHTML = GERENTES.map(x=>card(x)).join("");
+  $("#sheet-gerentes").innerHTML = GERENTES.map(x=>card(x,true)).join("");
+  document.querySelectorAll("[data-escolher]").forEach(b => b.addEventListener("click", () => { definirGerente(b.dataset.escolher); fecharSheet(); }));
+  $("#flutuante").innerHTML = botaoContato("", "btn btn-pri flutuante");
+  $("#hero-acao").innerHTML = botaoContato("Quero registrar interesse de cliente no Quaddra Jesuíno Arruda.", "btn btn-fant", "Registrar interesse");
+  ligarSheet($("#flutuante")); ligarSheet($("#hero-acao"));
+  if ($("#ficha").classList.contains("aberta") && location.hash.startsWith("#e-")) abrirFicha(location.hash.slice(3));
+}
+
+/* --- filtros e vitrine --- */
+function montarFiltros(){
+  $("#filtros").innerHTML = FILTROS.map(f => `
+    <div class="grupo" role="group" aria-label="${f.rot}">
+      <span class="rot">${f.rot}</span>
+      ${f.ops.map(([v,r]) => `<button type="button" class="chip" aria-pressed="false" data-f="${f.chave}" data-v="${esc(v)}">${esc(r)}</button>`).join("")}
+    </div>`).join("") + `<div><button type="button" class="limpar" id="limpar">Limpar filtros</button></div>`;
+  document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+    const set = estado[b.dataset.f], v = b.dataset.v;
+    set.has(v) ? set.delete(v) : set.add(v);
+    b.setAttribute("aria-pressed", set.has(v));
+    render();
+  }));
+  $("#limpar").addEventListener("click", limparFiltros);
+}
+function limparFiltros(){
+  ["bairro","estagio","tipo","perfil"].forEach(k => estado[k].clear());
+  estado.busca = ""; $("#busca").value = "";
+  document.querySelectorAll(".chip").forEach(b => b.setAttribute("aria-pressed","false"));
+  render();
+}
+function passa(e){
+  if (estado.bairro.size && !estado.bairro.has(e.bairro)) return false;
+  if (estado.estagio.size && !estado.estagio.has(e.estagio)) return false;
+  if (estado.tipo.size){ const t = tiposDe(e); if (![...estado.tipo].some(x => t.has(x))) return false; }
+  if (estado.perfil.size && ![...estado.perfil].some(p => e.perfis.includes(p))) return false;
+  if (estado.busca && !semAcento([e.nome,e.bairro,e.end,e.gancho].join(" ")).includes(semAcento(estado.busca))) return false;
+  return true;
+}
+function foto(e, extra=""){
+  return `<div class="foto">${e.img ? `<img src="img/${e.img}.jpg" alt="Perspectiva do ${esc(e.nome)}" loading="lazy">`
+    : `<div class="tipo-arte"><b>${esc(e.arte||"")}</b><span>${esc(e.arteSub||"")}</span></div>`}
+    <span class="bairro-tag">${esc(e.bairro)}</span>
+    ${e.campanha ? `<span class="camp so-corretor">${esc(e.campanha)}</span>` : ""}${extra}</div>`;
+}
+function resumo(e){
+  if (e.lojasLista) return `${e.lojasLista.length} empreendimentos com lojas`;
+  return e.tipos.map(t => t.a).join(" · ");
+}
+function render(){
+  const lista = EMPS.filter(passa);
+  $("#contagem").textContent = `${lista.length} de ${EMPS.length}`;
+  $("#grade").innerHTML = lista.length ? lista.map(e => {
+    const [rot, cls] = ESTAGIO[e.estagio];
+    return `<a class="card" href="#e-${e.id}">
+      ${foto(e)}
+      <div class="corpo">
+        <h3>${esc(e.nome)}</h3>
+        <div class="gancho">${esc(e.gancho)}</div>
+        <div class="resumo">${esc(resumo(e))}</div>
+        ${e.com ? `<div class="comis so-corretor">${e.com.pj===e.com.pf ? esc(e.com.pj)+" PJ e PF" : esc(e.com.pj)+" PJ · "+esc(e.com.pf)+" PF"}</div>` : ""}
+        <div class="rodape"><span class="selo ${cls}">${rot}${e.entrega ? " · "+esc(e.entrega) : ""}</span><span class="ver">Ver ficha</span></div>
+      </div></a>`;
+  }).join("") : `<div class="vazio">Nenhum empreendimento com esses filtros. <button type="button" class="limpar" id="limpar2">Limpar filtros</button></div>`;
+  $("#limpar2")?.addEventListener("click", limparFiltros);
+}
+
+/* --- ficha --- */
+function textoCliente(e){
+  const [rot] = ESTAGIO[e.estagio];
+  const L = [`*${e.nome}* · ${e.bairro}`, e.end, `${rot}${e.entrega ? " · entrega " + e.entrega : ""}`, "", e.gancho];
+  if (e.tipos.length){ L.push("", "Plantas:"); e.tipos.forEach(t => L.push(`• ${t.d}: ${t.a}`)); }
+  if (e.lojasLista){ L.push("", "Lojas disponíveis:"); e.lojasLista.forEach(l => L.push(`• ${l[0]}: ${l[2]}`)); }
+  if (e.destaques?.length){ L.push("", "Destaques:"); e.destaques.forEach(d => L.push(`• ${d}`)); }
+  L.push("", "Quer agendar uma visita? Me chama aqui.");
+  return L.join("\n");
+}
+let ultimoFoco = null;
+function abrirFicha(id){
+  const e = EMPS.find(x => x.id === id); if (!e) return;
+  const [rot, cls] = ESTAGIO[e.estagio];
+  const mapa = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(e.end + ", " + e.bairro + ", São Paulo");
+  const g = gerenteAtual;
+  $("#ficha").innerHTML = `
+    <div class="capa">${foto(e)}<button class="fechar" type="button" id="fechar-ficha">Fechar</button></div>
+    <div class="cont">
+      <div>
+        <span class="selo ${cls}">${rot}</span>
+        <h2 id="ficha-tit" style="margin-top:10px">${esc(e.nome)}</h2>
+        <div class="end">${esc(e.end)} · ${esc(e.bairro)}</div>
+      </div>
+      <div class="fatos">
+        <div class="fato"><div class="r">Estágio</div><div class="v">${rot}</div></div>
+        <div class="fato"><div class="r">Entrega</div><div class="v">${e.estagio==="pronto" ? "Pronto" : esc(e.entrega || "a confirmar")}</div></div>
+        <div class="fato"><div class="r">Bairro</div><div class="v">${esc(e.bairro)}</div></div>
+      </div>
+      <div class="bloco"><h3>Por que vende</h3><p>${esc(e.gancho)}.</p>
+        ${e.destaques?.length ? `<ul style="margin:8px 0 0;padding-left:20px">${e.destaques.map(d=>`<li>${esc(d)}</li>`).join("")}</ul>` : ""}</div>
+      ${e.tipos.length ? `<div class="bloco"><h3>Plantas</h3><ul class="tipos">${e.tipos.map(t=>`<li><span>${esc(t.d)}</span><span class="a">${esc(t.a)}</span></li>`).join("")}</ul></div>` : ""}
+      ${e.lojasLista ? `<div class="bloco"><h3>Operações disponíveis</h3><ul class="tipos">${e.lojasLista.map(l=>`<li><span>${esc(l[0])}<br><small style="color:var(--tinta-suave)">${esc(l[1])}</small></span><span class="a">${esc(l[2])}</span></li>`).join("")}</ul></div>` : ""}
+      ${e.lojas ? `<div class="bloco"><h3>Lojas no empreendimento</h3><p>${esc(e.lojas)}</p></div>` : ""}
+      ${e.campanha ? `<div class="bloco camp-bloco so-corretor"><h3>Campanha ativa</h3><p><b>${esc(e.campanha)}</b>. Condições na tabela vigente.</p></div>` : ""}
+      <div class="bloco com so-corretor"><h3>Sua comissão</h3>
+        ${e.com ? `<p><b>CRECI PJ:</b> ${esc(e.com.pj)}</p><p><b>CRECI PF:</b> ${esc(e.com.pf)}</p>${e.comNota ? `<p>${esc(e.comNota)}</p>` : ""}` : `<p>Ainda não divulgada. Consulte seu gerente.</p>`}
+        <p class="nota" style="margin-top:6px">O resumo para o cliente não leva comissão nem campanha.</p></div>
+      <div class="bloco"><h3>Materiais</h3>
+        ${e.mats.length ? `<div class="mats">${e.mats.map(([r,u],i)=>`<a class="btn ${i===0?"btn-pri":"btn-sec"} ${r==="Tabela"||r==="Campanha"?"so-corretor":""}" href="${u}" target="_blank" rel="noopener">${esc(r)}</a>`).join("")}</div>`
+          : `<p>Materiais em breve. Peça ao seu gerente para receber em primeira mão.</p>`}
+      </div>
+      <div class="acoes">
+        ${e.tour ? `<a class="btn btn-pri full" href="${e.tour}" target="_blank" rel="noopener">Tour interativo (o mesmo do plantão)</a>` : ""}
+        ${botaoContato(`Quero falar sobre o ${e.nome}.`, "btn btn-pri")}
+        <a class="btn btn-sec" href="${mapa}" target="_blank" rel="noopener">Ver no mapa</a>
+        <button class="btn btn-pri full" type="button" id="copiar">Copiar resumo para enviar ao cliente</button>
+      </div>
+      <div class="copiado" id="copiado" aria-live="polite"></div>
+      <textarea class="texto-cliente" id="texto-cliente" readonly aria-label="Resumo para o cliente">${esc(textoCliente(e))}</textarea>
+    </div>`;
+  ultimoFoco = ultimoFoco || document.activeElement;
+  $("#ficha").classList.add("aberta"); $("#fundo").classList.add("aberta");
+  $("#ficha").scrollTop = 0; document.body.style.overflow = "hidden";
+  $("#fechar-ficha").addEventListener("click", () => fecharFicha(true));
+  $("#fechar-ficha").focus();
+  ligarSheet($("#ficha"));
+  $("#copiar").addEventListener("click", async () => {
+    const ta = $("#texto-cliente");
+    try { await navigator.clipboard.writeText(textoCliente(e)); ta.style.display="none"; $("#copiado").textContent = "Copiado. Agora é só colar no WhatsApp do cliente."; }
+    catch { ta.style.display="block"; ta.focus(); ta.select(); $("#copiado").textContent = "Não deu para copiar automaticamente. O texto está selecionado abaixo: copie e cole no WhatsApp."; }
+  });
+}
+function fecharFicha(limparHash){
+  $("#ficha").classList.remove("aberta");
+  if (!$("#sheet").classList.contains("aberta")) $("#fundo").classList.remove("aberta");
+  document.body.style.overflow = "";
+  if (limparHash && location.hash.startsWith("#e-")) history.replaceState(null, "", location.pathname + location.search + "#empreendimentos");
+  if (ultimoFoco){ ultimoFoco.focus?.(); ultimoFoco = null; }
+}
+function abrirSheet(){ $("#sheet").classList.add("aberta"); $("#fundo").classList.add("aberta"); $("#fechar-sheet").focus(); }
+function fecharSheet(){ $("#sheet").classList.remove("aberta"); if (!$("#ficha").classList.contains("aberta")) $("#fundo").classList.remove("aberta"); }
+
+/* --- gestão --- */
+function renderGestao(){
+  const base = location.href.split("#")[0];
+  $("#links-ger").innerHTML = GERENTES.map(g => `<div class="link-ger"><b style="min-width:150px">${esc(g.nome)}</b><code>${esc(base)}#g-${g.id}</code><button class="btn btn-sec btn-mini" type="button" data-copiar-link="${esc(base)}#g-${g.id}">Copiar link</button></div>`).join("");
+  document.querySelectorAll("[data-copiar-link]").forEach(b => b.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copiarLink); b.textContent = "Copiado"; } catch { b.textContent = "Selecione e copie"; }
+  }));
+  $("#tab-com").innerHTML = EMPS.map(e => `<tr><td>${esc(e.nome)}</td><td>${e.com ? esc(e.com.pj) : "a divulgar"}</td><td>${e.com ? esc(e.com.pf) : "a divulgar"}</td></tr>`).join("");
+}
+
+/* --- rotas (#e-ficha, #g-gerente) --- */
+function rota(){
+  const h = location.hash.slice(1);
+  if (h.startsWith("g-")){
+    definirGerente(h.slice(2));
+    history.replaceState(null, "", location.pathname + location.search + "#inicio");
+    return;
+  }
+  if (h.startsWith("e-")) abrirFicha(h.slice(2));
+  else if ($("#ficha").classList.contains("aberta")) fecharFicha(false);
+}
+
+/* --- modo cliente --- */
+function aplicarModo(on){
+  document.body.classList.toggle("modo-cliente", on);
+  $("#modo").setAttribute("aria-pressed", on);
+  $("#modo").textContent = on ? "Modo cliente ligado" : "Modo cliente";
+  store.set("yuny-modo-cliente", on ? "1" : "0");
+}
+
+
+/* ===================== ACESSO =====================
+   API_URL = endereço do App da Web do Apps Script ligado à planilha "Base do Portal Parcerias".
+   Com API_URL preenchido, cadastro e login vão para a aba "Cadastros" (a senha nunca é salva aberta).
+   Com API_URL vazio, o portal funciona só neste navegador (modo teste). */
+const API_URL = "https://script.google.com/macros/s/AKfycbz3yPWwZtRLvtGKplhGtejXzvg_mKfSqajpjIg96An98YK-S4uYhUslWFyK_VmOUlKbnA/exec";
+async function api(acao, dados){
+  const r = await fetch(API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body: JSON.stringify({acao, ...dados})});
+  if (!r.ok) throw new Error("http "+r.status);
+  return r.json();
+}
+const soDig = v => (v||"").replace(/\D/g,"");
+function cpfValido(c){
+  c = soDig(c); if (c.length!==11 || /^(\d)\1{10}$/.test(c)) return false;
+  for (let t=9;t<11;t++){ let s=0; for(let i=0;i<t;i++) s+= +c[i]*(t+1-i); const d=((s*10)%11)%10; if (d!==+c[t]) return false; }
+  return true;
+}
+const mascCPF = v => soDig(v).slice(0,11).replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})\.(\d{3})(\d)/,"$1.$2.$3").replace(/(\d{3})-?(\d{1,2})$/,"$1-$2").replace(/^(\d{3}\.\d{3}\.\d{3})(\d)/,"$1-$2");
+const mascTel = v => { const d=soDig(v).slice(0,11); return d.length<3? d : d.length<8? `(${d.slice(0,2)}) ${d.slice(2)}` : `(${d.slice(0,2)}) ${d.slice(2,d.length-4)}-${d.slice(-4)}`; };
+const mascCNPJ = v => soDig(v).slice(0,14).replace(/^(\d{2})(\d)/,"$1.$2").replace(/^(\d{2})\.(\d{3})(\d)/,"$1.$2.$3").replace(/\.(\d{3})(\d)/,".$1/$2").replace(/(\d{4})(\d)/,"$1-$2");
+async function hash(txt){
+  try { const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join(""); }
+  catch { let h=0; for (const ch of txt) h=(h*31+ch.charCodeAt(0))|0; return "x"+h; }
+}
+const usuarios = () => { try { return JSON.parse(store.get("yuny-usuarios")||"{}"); } catch { return {}; } };
+let usuario = null;
+
+function entrarComo(u){
+  usuario = {cpf:u.cpf, nome:u.nome, gerente:u.gerente||"sem"};
+  store.set("yuny-sessao", JSON.stringify(usuario));
+  definirGerente(u.gerente && u.gerente!=="sem" ? u.gerente : "");
+  if (!u.gerente || u.gerente==="sem"){ gerenteAtual = null; try{localStorage.removeItem("yuny-gerente")}catch{}; renderGerentes(); }
+  document.body.classList.remove("travado");
+  renderSessao();
+  window.scrollTo(0,0);
+}
+function sair(){
+  usuario = null; try{ localStorage.removeItem("yuny-sessao"); }catch{}
+  document.body.classList.add("travado"); window.scrollTo(0,0);
+}
+function renderSessao(){
+  const nav = document.querySelector(".topo nav");
+  nav.querySelector(".sessao")?.remove();
+  const span = document.createElement("span"); span.className="sessao";
+  span.style.cssText="display:inline-flex;align-items:center;gap:8px;color:#dff3f3;font-size:14px;margin-left:6px";
+  if (usuario){
+    span.innerHTML = `Olá, <b style="color:#fff">${esc(usuario.nome.split(" ")[0])}</b> <button type="button" class="toggle sair" id="btn-sair">Sair</button>`;
+  } else {
+    span.innerHTML = `<button type="button" class="toggle sair" id="btn-sair">Entrar</button>`;
+  }
+  nav.appendChild(span);
+  $("#btn-sair").addEventListener("click", sair);
+}
+
+function abaAcesso(qual){
+  const cad = qual==="cad";
+  $("#aba-entrar").setAttribute("aria-selected", !cad); $("#aba-cad").setAttribute("aria-selected", cad);
+  $("#form-entrar").hidden = cad; $("#form-cad").hidden = !cad;
+}
+function erro(id, txt){ const el=$("#e-"+id); if (el) el.textContent = txt||""; const inp=$("#c-"+id); if (inp) inp.classList.toggle("erro", !!txt); return !txt; }
+function retorno(id, txt, tipo){ const el=$(id); el.textContent=txt; el.className="retorno on "+tipo; }
+
+function montarAcesso(){
+  // gerentes no cadastro (pré-seleciona se veio pelo link do gerente)
+  const pre = gerenteAtual?.id;
+  $("#c-gerentes").innerHTML = GERENTES.map(g=>`<label class="opcao"><input type="radio" name="ger" value="${g.id}" ${pre===g.id?"checked":""}> ${esc(g.nome)}</label>`).join("")
+    + `<label class="opcao"><input type="radio" name="ger" value="sem" ${pre?"":"checked"}> Não tenho gerente</label>`;
+  $("#aba-entrar").onclick = () => abaAcesso("entrar");
+  $("#aba-cad").onclick = () => abaAcesso("cad");
+  $("#ir-cad").onclick = () => abaAcesso("cad");
+  $("#pular").onclick = () => { document.body.classList.remove("travado"); renderSessao(); };
+  $("#esqueci").onclick = () => retorno("#r-entrar","Fale com seu gerente de Parcerias pelo WhatsApp. Ele libera seu CPF e você faz o cadastro de novo, com uma senha nova.","ok");
+  $("#ver-termos").onclick = () => $("#termos").classList.add("on");
+  $("#fechar-termos").onclick = () => $("#termos").classList.remove("on");
+  [["#l-cpf",mascCPF],["#c-cpf",mascCPF],["#c-whats",mascTel],["#c-cnpj",mascCNPJ]].forEach(([sel,f]) => $(sel).addEventListener("input", ev => { ev.target.value = f(ev.target.value); }));
+  document.querySelectorAll('input[name="atua"]').forEach(r => r.addEventListener("change", () => {
+    $("#bloco-imob").classList.toggle("on", document.querySelector('input[name="atua"]:checked').value==="imob");
+  }));
+  $("#c-cpf").addEventListener("blur", () => { const v=$("#c-cpf").value; if (v) erro("cpf", cpfValido(v)? "" : "CPF inválido. Confira os números."); });
+
+  $("#form-entrar").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const cpf = soDig($("#l-cpf").value), senha = $("#l-senha").value;
+    if (!cpfValido(cpf)) return retorno("#r-entrar","CPF inválido. Confira os números.","erro");
+    if (API_URL){
+      const bt = ev.submitter; if (bt) bt.disabled = true;
+      retorno("#r-entrar","Entrando…","ok");
+      try {
+        const r = await api("login", {cpf, senha: await hash(senha)});
+        if (r.ok) return entrarComo({...r.usuario, gerente: (GERENTES.find(g=>g.nome===r.usuario.gerenteNome)||{}).id || "sem"});
+        const msg = {nao_encontrado:'Não encontramos cadastro com esse CPF. Toque em "Ainda não tenho cadastro".', senha:'Senha incorreta. Tente de novo ou toque em "Esqueci minha senha".'}[r.erro] || "Não foi possível entrar agora. Tente de novo em instantes.";
+        return retorno("#r-entrar", msg, "erro");
+      } catch { return retorno("#r-entrar","Sem conexão com o servidor. Confira sua internet e tente de novo.","erro"); }
+      finally { if (bt) bt.disabled = false; }
+    }
+    const u = usuarios()[cpf];
+    if (!u) return retorno("#r-entrar","Não encontramos cadastro com esse CPF. Toque em \"Ainda não tenho cadastro\".","erro");
+    if (u.senha !== await hash(senha)) return retorno("#r-entrar","Senha incorreta. Tente de novo ou toque em \"Esqueci minha senha\".","erro");
+    entrarComo(u);
+  });
+
+  $("#form-cad").addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const v = id => $("#c-"+id).value.trim();
+    const atua = document.querySelector('input[name="atua"]:checked').value;
+    const ger = document.querySelector('input[name="ger"]:checked')?.value || "sem";
+    let ok = true;
+    ok = erro("nome", v("nome").split(" ").filter(Boolean).length<2 ? "Informe nome e sobrenome." : "") && ok;
+    ok = erro("cpf", !cpfValido(v("cpf")) ? "CPF inválido. Confira os números." : (!API_URL && usuarios()[soDig(v("cpf"))] ? "Este CPF já tem cadastro. Use a aba Entrar." : "")) && ok;
+    ok = erro("creci", soDig(v("creci")).length<4 ? "Informe o número do CRECI." : "") && ok;
+    ok = erro("whats", soDig(v("whats")).length<10 ? "WhatsApp com DDD." : "") && ok;
+    ok = erro("email", !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("email")) ? "E-mail inválido." : "") && ok;
+    if (atua==="imob") ok = erro("imob", v("imob").length<2 ? "Informe a imobiliária." : "") && ok; else erro("imob","");
+    ok = erro("senha", v("senha").length<6 ? "Use pelo menos 6 caracteres." : "") && ok;
+    ok = erro("senha2", v("senha2")!==v("senha") ? "As senhas não são iguais." : "") && ok;
+    const aceite = $("#c-aceite").checked;
+    $("#e-aceite").textContent = aceite ? "" : "Para continuar, aceite os termos."; ok = aceite && ok;
+    if (!ok) return retorno("#r-cad","Confira os campos marcados em vermelho.","erro");
+    const u = {
+      cpf: soDig(v("cpf")), nome: v("nome"), creci: v("creci"), whats: soDig(v("whats")), email: v("email"),
+      atua, imob: atua==="imob" ? v("imob") : "", cnpj: atua==="imob" ? soDig(v("cnpj")) : "",
+      gerente: ger, gerenteNome: (GERENTES.find(g=>g.id===ger)||{}).nome || "Não tenho gerente",
+      aceite: new Date().toISOString(), senha: await hash(v("senha"))
+    };
+    if (API_URL){
+      const bt = ev.submitter; if (bt) bt.disabled = true;
+      retorno("#r-cad","Enviando cadastro…","ok");
+      try {
+        const r = await api("cadastro", u);
+        if (r.ok){ retorno("#r-cad","Cadastro criado. Entrando…","ok"); return setTimeout(() => entrarComo(u), 500); }
+        if (r.erro==="ja_existe"){ erro("cpf","Este CPF já tem cadastro. Use a aba Entrar."); return retorno("#r-cad","Este CPF já tem cadastro. Use a aba Entrar.","erro"); }
+        return retorno("#r-cad","Não foi possível cadastrar agora. Tente de novo em instantes.","erro");
+      } catch { return retorno("#r-cad","Sem conexão com o servidor. Confira sua internet e tente de novo.","erro"); }
+      finally { if (bt) bt.disabled = false; }
+    }
+    const todos = usuarios(); todos[u.cpf] = u; store.set("yuny-usuarios", JSON.stringify(todos));
+    retorno("#r-cad","Cadastro criado. Entrando…","ok");
+    setTimeout(() => entrarComo(u), 500);
+  });
+}
+
+/* init */
+montarFiltros(); render(); renderGerentes(); renderGestao();
+aplicarModo(store.get("yuny-modo-cliente") === "1");
+$("#modo").addEventListener("click", () => aplicarModo(!document.body.classList.contains("modo-cliente")));
+$("#busca").addEventListener("input", ev => { estado.busca = ev.target.value.trim(); render(); });
+$("#fechar-sheet").addEventListener("click", fecharSheet);
+$("#fundo").addEventListener("click", () => { if ($("#sheet").classList.contains("aberta")) fecharSheet(); else fecharFicha(true); });
+document.addEventListener("keydown", ev => { if (ev.key === "Escape"){ if ($("#sheet").classList.contains("aberta")) fecharSheet(); else if ($("#ficha").classList.contains("aberta")) fecharFicha(true); } });
+window.addEventListener("hashchange", rota);
+rota();
+
+montarAcesso();
+{ let u = null; const sess = store.get("yuny-sessao");
+  try { u = sess && (sess.startsWith("{") ? JSON.parse(sess) : usuarios()[sess]); } catch {}
+  if (u && u.cpf){
+    usuario = {cpf:u.cpf, nome:u.nome, gerente:u.gerente||"sem"}; renderSessao();
+    if (API_URL) api("acesso", {cpf:u.cpf}).catch(()=>{});
+  } else { document.body.classList.add("travado"); renderSessao(); } }
+
+</script>
+</body>
+</html>
