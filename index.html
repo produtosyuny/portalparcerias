@@ -173,6 +173,8 @@ tr:last-child td{border-bottom:0}
 .gestao h3{font-size:14px;text-transform:uppercase;letter-spacing:.07em;color:var(--tinta-suave);margin:14px 0 8px}
 .gestao ul{margin:0 0 12px;padding-left:20px}
 .gestao li{margin:6px 0;font-size:15px}
+.aviso-troca{grid-column:1/-1;margin:4px 0 0;font-size:14px;color:var(--tinta-suave)}
+.aviso-troca a{color:var(--bronze);font-weight:600}
 .links-ger{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
 .link-ger{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:15px}
 .link-ger code{background:var(--pedra);padding:6px 10px;border-radius:8px;font-size:13px;word-break:break-all}
@@ -525,15 +527,9 @@ th{background:var(--areia)}
   <section class="secao" id="gerentes" aria-labelledby="ger-tit">
     <h2 id="ger-tit">Gerentes de Parcerias Yuny</h2>
     <div class="gerentes" id="lista-gerentes"></div>
-    <p class="nota">Todos os gerentes atendem todos os empreendimentos. Escolha o seu: o portal guarda a escolha e todos os botões de contato passam a falar com ele.</p>
+    <p class="nota" id="ger-nota">Todos os gerentes atendem todos os empreendimentos. Escolha o seu: depois de escolhido, todos os botões de contato passam a falar com ele.</p>
   </section>
 
-  <details class="gestao so-corretor" id="gestao">
-    <summary>Gestão de Parcerias: link de cada gerente</summary>
-    <h3>Link de cada gerente</h3>
-    <p class="nota" style="margin-top:0">O gerente envia o próprio link às imobiliárias dele. Quem entra por ele já vê esse gerente como contato.</p>
-    <div class="links-ger" id="links-ger"></div>
-      </details>
 
   <footer>Yuny Parcerias · Dados mantidos pelo time de Parcerias.</footer>
 </main>
@@ -555,12 +551,10 @@ th{background:var(--areia)}
    Base do site. A planilha (aba Empreendimentos) é lida ao abrir e manda no que mudar. */
 
 const GERENTES = [
-  {id:"alberto", nome:"Alberto Monteiro", tel:"5511996110179"},
   {id:"antonela", nome:"Antonela Vieira", tel:"5511940331802"},
-  {id:"belluzzi", nome:"Belluzzi", tel:"5511963559457"},
   {id:"elano", nome:"Elano", tel:"5511957924929"},
   {id:"peterson", nome:"Peterson Silveira", tel:"5511932082828"},
-  {id:"ricardo", nome:"Ricardo", tel:"5511953181448"}
+  {id:"ricardo", nome:"Ricardo Oliveira", tel:"5511953181448"}
 ];
 
 const EMPS = [
@@ -642,6 +636,25 @@ const EMPS = [
    - Gancho e plantas: o site mantém o texto mais completo até você mudar esses campos na planilha.
    - Linha nova (id que o site não conhece) vira um card novo, sem foto. */
 const PLANILHA_CSV = "https://docs.google.com/spreadsheets/d/1K_bNor56Ew2PI91kUxtSIFioDnQC95mKM5KH5h_lmUU/export?format=csv&gid=0";
+/* Aba Gerentes: id | Nome | ... | WhatsApp | ... | Ativo?  (só entra quem tem "SIM" e WhatsApp) */
+const GERENTES_CSV = "https://docs.google.com/spreadsheets/d/1K_bNor56Ew2PI91kUxtSIFioDnQC95mKM5KH5h_lmUU/export?format=csv&gid=2";
+const GERENTES_INICIAL = [["id (vai no link)", "Nome", "Observação", "WhatsApp (55 + DDD + número)", "E-mail", "Ativo?"], ["antonela", "Antonela Vieira", "", "5511940331802", "", "SIM"], ["elano", "Elano", "", "5511957924929", "", "SIM"], ["peterson", "Peterson Silveira", "", "5511932082828", "", "SIM"], ["ricardo", "Ricardo Oliveira", "", "5511953181448", "", "SIM"]];
+function aplicarGerentes(linhas, definitivo){
+  if (!linhas || linhas.length<2) return false;
+  const cab = linhas[0].map(h=>semAcento(h.trim()));
+  const ci = cab.findIndex(h=>h.startsWith("id")), cn = cab.findIndex(h=>h.startsWith("nome")),
+        ct = cab.findIndex(h=>h.startsWith("whats")), ca = cab.findIndex(h=>h.startsWith("ativo"));
+  if (ci<0 || cn<0 || ct<0) return false;
+  const lista = linhas.slice(1).map(l => ({id:(l[ci]||"").trim().toLowerCase(), nome:(l[cn]||"").trim(), tel:(l[ct]||"").replace(/\D/g,""),
+                                           ativo: ca<0 || /^s/i.test(semAcento((l[ca]||"").trim()))}))
+                       .filter(g => g.id && g.nome && g.tel.length>=12 && g.ativo).map(({ativo,...g})=>g);
+  if (!lista.length) return false;
+  GERENTES.splice(0, GERENTES.length, ...lista);
+  const salvo = store.get("yuny-gerente"), id = gerenteAtual?.id || salvo;
+  gerenteAtual = GERENTES.find(g => g.id === id) || null;
+  if (!gerenteAtual && salvo && definitivo){ try{ localStorage.removeItem("yuny-gerente"); localStorage.removeItem("yuny-gerente-fixo"); }catch{} }
+  return true;
+}
 /* Aba Materiais: id | Material | Link. Link vazio = o botão vira pedido pelo WhatsApp ao gerente. */
 const MATERIAIS_CSV = "https://docs.google.com/spreadsheets/d/1K_bNor56Ew2PI91kUxtSIFioDnQC95mKM5KH5h_lmUU/export?format=csv&gid=1";
 const MATERIAIS_INICIAL = [["id", "Material", "Link (vazio = pedido pelo WhatsApp)", "Observação"], ["quaddra-jesuino", "Tabela de vendas", ""], ["quaddra-jesuino", "Book", ""], ["quaddra-jesuino", "Plantas", ""], ["quaddra-jesuino", "Imagens", ""], ["quaddra-jesuino", "Vídeos", ""], ["quaddra-jesuino", "Treinamento", ""], ["quaddra-lorena", "Tabela de vendas", "https://drive.google.com/file/d/141579XrZU7VzhoY-FFQfXdafshaJlye2/view"], ["quaddra-lorena", "Book", "https://drive.google.com/file/d/1qfLmJb-4IpUrVIjpJ-Rf6lPIhiABItEA/view"], ["quaddra-lorena", "Plantas", "https://drive.google.com/drive/folders/10NQs_r7kFq1nU4rbLKWp1pFB8zh4_w0O"], ["quaddra-lorena", "Imagens", "https://drive.google.com/drive/folders/1FGdKGidR0SFAS5CteaXFdtLGGxJKlfS7"], ["quaddra-lorena", "Vídeos", "https://drive.google.com/drive/folders/1hWs_ia5PoqikI7PnUuNQwhJedb64tXUv"], ["quaddra-lorena", "Treinamento", "https://drive.google.com/file/d/1O3OR4taiapT0ZIZblO0yN4BfsJPsvnB0/view"], ["quaddra-lorena", "Decorado (fotos)", "https://drive.google.com/drive/folders/1TQVT524gS1VH_NZEubphmLMzq94xiEMd"], ["quaddra-lorena", "Pasta completa", "https://drive.google.com/drive/folders/1YU0OFGbNh5kjokR_02X2zxzlYZPkabAU"], ["155-jeronimo", "Tabela de vendas", "https://drive.google.com/file/d/1CSp5LLYiK0gD44c7HvEW0ZnoeTKOld7M/view"], ["155-jeronimo", "Book", "https://drive.google.com/drive/folders/1k2snJfgzuRTRtnjWq6ywoTATSJkQ1YUF"], ["155-jeronimo", "Plantas", "https://drive.google.com/drive/folders/1_nrHL1iIsPigp2riQREVb3Wp_H-zsbj3"], ["155-jeronimo", "Imagens", "https://drive.google.com/drive/folders/10PstCdoMfiat6LnEnuH9xw9SeKyfa1I5"], ["155-jeronimo", "Vídeos", "https://drive.google.com/file/d/1V077T_nGk-iwEYDkCMdlBlXNzs-cunNa/view"], ["155-jeronimo", "Treinamento", "https://drive.google.com/file/d/1qXKLkoJZ2UHNN9hMLaQP0sF0dF8UGxhV/view"], ["155-jeronimo", "Pasta completa", "https://drive.google.com/drive/folders/1Ar3VcfTmuVgAtipUQO-RYaEfmKeNHQqI"], ["177-jeronimo", "Tabela de vendas", "https://drive.google.com/file/d/1LV1gKZra3VdrsckdI1VgwQpKW8pZ_FUK/view"], ["177-jeronimo", "Book", ""], ["177-jeronimo", "Plantas", "https://drive.google.com/drive/folders/11YAJGB-OWJLFEXervtywM6HDtp4p9xfO"], ["177-jeronimo", "Imagens", "https://drive.google.com/drive/folders/1r3DNIQ9iBK8Nsjjv-KA3KTEkNoSO7hHj"], ["177-jeronimo", "Vídeos", "https://drive.google.com/drive/folders/1wBOPrvHnv85lnsqDFgkvUG861JFdvW4S"], ["177-jeronimo", "Treinamento", ""], ["177-jeronimo", "Pasta completa", "https://drive.google.com/drive/folders/1zz7eDUPejUEJsbgdB1_irrXMPCrpiUIL"], ["esquina-jardyn", "Tabela de vendas", "https://drive.google.com/file/d/1Tf54prKxPwonB-jcAaD2dE39rv3CvEJh/view"], ["esquina-jardyn", "Book", ""], ["esquina-jardyn", "Plantas", "https://drive.google.com/file/d/1Mw-hke2p_toU2KUCXhAvH2-B1kIFBGzA/view"], ["esquina-jardyn", "Imagens", "https://drive.google.com/drive/folders/1pl8749U93ugzcvCsZ-nRpt17-Z9H2Mjv"], ["esquina-jardyn", "Vídeos", "https://drive.google.com/file/d/1Q6F3u-zFLxKRH2amRXHEOmMXezzJs2v-/view"], ["esquina-jardyn", "Treinamento", "https://drive.google.com/file/d/1cAPH-rZU76PprUWAHhmKtaPIzBF07NqX/view"], ["esquina-jardyn", "Pasta completa", "https://drive.google.com/drive/folders/1o63CrCXKMAF1iKAOD6ZyzL79vJfEJjpC"], ["zip-brooklin", "Tabela de vendas", "https://drive.google.com/file/d/1HSokU4Tl6xSY44h48yOXWMlVF0IQBdhX/view"], ["zip-brooklin", "Book", ""], ["zip-brooklin", "Plantas", "https://drive.google.com/drive/folders/17o1A4roIhoDrTTQsPZA1losTkjuMJanH"], ["zip-brooklin", "Imagens", "https://drive.google.com/drive/folders/1H-Lm4y4vVMdDGQ0AxoylJMscYZQoycw5"], ["zip-brooklin", "Vídeos", "https://www.youtube.com/watch?v=xRMfuYXBtVs"], ["zip-brooklin", "Treinamento", ""], ["zip-brooklin", "Pasta completa", "https://drive.google.com/drive/folders/1Rmii_wDSPVqcsbOCCd64Gr9b-uuaEXP8"], ["uape", "Tabela de vendas", "https://drive.google.com/file/d/1c23y293izmES2XUYFdbY9VV8XAm--DDP/view"], ["uape", "Book", ""], ["uape", "Plantas", "https://drive.google.com/drive/folders/184bT0p-lKlsMBo4qzRRQQeFEScqQ-Ui-"], ["uape", "Imagens", "https://drive.google.com/drive/folders/1XaNwANQFjv00iznVoluTlFrzJr3EVb5C"], ["uape", "Vídeos", "https://drive.google.com/file/d/15MCFuBE3f4tH6alBQBqy4ISZsp0oRsMG/view"], ["uape", "Treinamento", ""], ["uape", "Pasta completa", "https://drive.google.com/drive/folders/1Gd_o7wsTmF5DFH80SVPQkGAngx8w9CLh"], ["camino", "Tabela de vendas", "https://drive.google.com/file/d/1cvQfE9mQleEF3pIYMZgRfxzNmymlTOIR/view"], ["camino", "Book", ""], ["camino", "Plantas", ""], ["camino", "Imagens", ""], ["camino", "Vídeos", ""], ["camino", "Treinamento", ""], ["camino", "Pasta completa", "https://drive.google.com/drive/folders/1t0wbDbukEr_jbR4vCWLUTZ0ZA9KNtikv"], ["ape-jardim-sul", "Tabela de vendas", "https://drive.google.com/file/d/1KUSnFLboBTC8cpx3fzedW9oiQ5vr5MP4/view"], ["ape-jardim-sul", "Book", ""], ["ape-jardim-sul", "Plantas", ""], ["ape-jardim-sul", "Imagens", ""], ["ape-jardim-sul", "Pasta completa", "https://drive.google.com/drive/folders/1xmSwClhbZlYGHGHWPkAt5wRQ3ULNimp-"], ["ape-vila-ema", "Tabela de vendas", "https://drive.google.com/file/d/1LisruyFPXJ8M4H1v1UZL8nQQak_CTryl/view"], ["ape-vila-ema", "Book", ""], ["ape-vila-ema", "Plantas", ""], ["ape-vila-ema", "Imagens", ""], ["ape-vila-ema", "Pasta completa", "https://drive.google.com/drive/folders/1t0CeHLwtwQqh3OX3w_Wp-EaK1Gy0l6u0"], ["lojas", "Tabela de vendas", ""], ["lojas", "Tabela Organy", "https://drive.google.com/file/d/1gfNvVCS-tFlfjA26w8xTsjkcWL_c9kcP/view"], ["lojas", "Tabela Apê Vila Ema", "https://drive.google.com/file/d/1LisruyFPXJ8M4H1v1UZL8nQQak_CTryl/view"], ["lojas", "Pasta completa", "https://drive.google.com/drive/folders/1F78lsCdKogeXdpOHBkzOa1Ti2LNq5wAU"]];
@@ -741,15 +754,22 @@ function redesenhar(){
   render();
   if (location.hash.startsWith("#e-")) rota();
 }
+function atualizarGerentesNaTela(){
+  renderGerentes(); montarGerentesCadastro();
+  try { renderGestao(); } catch {}
+  if (location.hash.startsWith("#g-")) rota();
+}
 async function sincronizarPlanilha(){
-  let cache = null, cacheM = null;
-  try { cache = JSON.parse(store.get("yuny-planilha")||"null"); cacheM = JSON.parse(store.get("yuny-materiais")||"null"); } catch {}
+  let cache = null, cacheM = null, cacheG = null;
+  try { cache = JSON.parse(store.get("yuny-planilha")||"null"); cacheM = JSON.parse(store.get("yuny-materiais")||"null"); cacheG = JSON.parse(store.get("yuny-gerentes")||"null"); } catch {}
+  aplicarGerentes(cacheG || GERENTES_INICIAL); atualizarGerentesNaTela();
   aplicarMateriais(cacheM || MATERIAIS_INICIAL);
   if (aplicarPlanilha(cache || PLANILHA_INICIAL)) redesenhar();
   if (PREVIA) return;
   const ler = async url => { try { const r = await fetch(url, {credentials:"omit", cache:"no-store"}); return r.ok ? lerCSV(await r.text()) : null; } catch { return null; } };
-  const [linhas, mats] = await Promise.all([ler(PLANILHA_CSV), ler(MATERIAIS_CSV)]);
+  const [linhas, mats, gers] = await Promise.all([ler(PLANILHA_CSV), ler(MATERIAIS_CSV), ler(GERENTES_CSV)]);
   let mudou = false;
+  if (gers && aplicarGerentes(gers, true)){ store.set("yuny-gerentes", JSON.stringify(gers)); atualizarGerentesNaTela(); mudou = true; }
   if (mats && aplicarMateriais(mats)){ store.set("yuny-materiais", JSON.stringify(mats)); mudou = true; }
   if (linhas && aplicarPlanilha(linhas)){ store.set("yuny-planilha", JSON.stringify(linhas)); mudou = true; }
   if (mudou) redesenhar();
@@ -778,6 +798,9 @@ const store = {get(k){try{return localStorage.getItem(k)}catch{return null}}, se
 
 /* --- gerente atual --- */
 let gerenteAtual = GERENTES.find(g => g.id === store.get("yuny-gerente")) || null;
+const gerenteFixo = () => !!gerenteAtual;   // escolheu (ou veio pelo link) = não troca mais pelo site
+const DIRETOR = {nome:"Rogerio", tel:"5511989569314", exibicao:"(11) 98956-9314"};
+const avisoTroca = () => `<p class="aviso-troca">Para trocar de gerente, fale com o Diretor de Parcerias: <a href="${waLink(DIRETOR, "Quero trocar de gerente no Portal Yuny Parcerias.")}" target="_blank" rel="noopener">${DIRETOR.exibicao}</a></p>`;
 function waLink(g, msg){
   if (!g || !g.tel) return null;
   const txt = `Olá ${g.nome.split(" ")[0]}, vim pelo Portal Yuny Parcerias. ${msg||""}`.trim();
@@ -785,7 +808,7 @@ function waLink(g, msg){
 }
 function definirGerente(id){
   gerenteAtual = GERENTES.find(g=>g.id===id) || null;
-  if (gerenteAtual) store.set("yuny-gerente", gerenteAtual.id);
+  if (id) store.set("yuny-gerente", gerenteAtual ? gerenteAtual.id : id); // id ainda desconhecido: confirma quando a planilha chegar
   renderGerentes();
 }
 function botaoContato(msg, cls, rotulo){
@@ -819,20 +842,23 @@ function renderGerentes(){
       <span class="quem"><small>Seu gerente Yuny</small><b>${esc(g.nome)}</b></span>
       <span class="acoes-ger">
         ${g.tel ? `<a class="btn btn-pri btn-mini" href="${waLink(g,"")}" target="_blank" rel="noopener">WhatsApp</a>` : `<span class="btn btn-mini" aria-disabled="true">WhatsApp a definir</span>`}
-        <button class="btn btn-sec btn-mini" type="button" data-trocar>Trocar gerente</button>
+        ${gerenteFixo() ? "" : `<button class="btn btn-sec btn-mini" type="button" data-trocar>Trocar gerente</button>`}
       </span>`
     : `<span class="quem"><b>Atendimento geral Yuny Parcerias</b><small>Você ainda não tem gerente. Escolha um quando quiser: todos os contatos passam a ir direto para ele.</small></span>
       <span class="acoes-ger"><button class="btn btn-pri btn-mini" type="button" data-trocar>Escolher gerente</button></span>`}
   </div>`;
-  $("#barra-ger [data-trocar]").addEventListener("click", abrirSheet);
+  $("#barra-ger [data-trocar]")?.addEventListener("click", abrirSheet);
   const card = (x, noSheet) => `<div class="gerente ${gerenteAtual && x.id===gerenteAtual.id ? "atual":""}">
       <div class="topo-g">${avatar(x)}
       <div><div class="reg">Gerente de Parcerias</div><div class="nome">${esc(x.nome)}</div></div></div>
       ${x.tel ? `<div class="tel">+${x.tel.slice(0,2)} ${x.tel.slice(2,4)} ${x.tel.slice(4,9)}-${x.tel.slice(9)}</div>` : `<div class="tel">WhatsApp a definir</div>`}
-      <button class="btn ${gerenteAtual && x.id===gerenteAtual.id ? "btn-sec" : "btn-pri"}" type="button" data-escolher="${x.id}">${gerenteAtual && x.id===gerenteAtual.id ? "É o meu gerente" : "Este é o meu gerente"}</button>
+      ${gerenteFixo() ? "" : `<button class="btn ${gerenteAtual && x.id===gerenteAtual.id ? "btn-sec" : "btn-pri"}" type="button" data-escolher="${x.id}">${gerenteAtual && x.id===gerenteAtual.id ? "É o meu gerente" : "Este é o meu gerente"}</button>`}
     </div>`;
-  $("#lista-gerentes").innerHTML = GERENTES.map(x=>card(x)).join("");
-  $("#sheet-gerentes").innerHTML = GERENTES.map(x=>card(x,true)).join("");
+  const mostrar = gerenteFixo() ? [gerenteAtual] : GERENTES;
+  $("#ger-tit").textContent = gerenteFixo() ? "Seu gerente de Parcerias" : "Gerentes de Parcerias Yuny";
+  $("#ger-nota").hidden = gerenteFixo();
+  $("#lista-gerentes").innerHTML = mostrar.map(x=>card(x)).join("") + (gerenteFixo() ? avisoTroca() : "");
+  $("#sheet-gerentes").innerHTML = mostrar.map(x=>card(x,true)).join("");
   document.querySelectorAll("[data-escolher]").forEach(b => b.addEventListener("click", () => { definirGerente(b.dataset.escolher); fecharSheet(); }));
   $("#flutuante").innerHTML = botaoContato("", "btn btn-pri flutuante");
   $("#hero-acao").innerHTML = botaoContato("Quero registrar interesse de cliente no Quaddra Jesuíno Arruda.", "btn btn-fant", "Registrar interesse");
@@ -973,6 +999,7 @@ function fecharSheet(){ $("#sheet").classList.remove("aberta"); if (!$("#ficha")
 
 /* --- gestão --- */
 function renderGestao(){
+  if (!$("#links-ger")) { renderComissoes(); return; }
   const base = location.href.split("#")[0];
   $("#links-ger").innerHTML = GERENTES.map(g => `<div class="link-ger"><b style="min-width:150px">${esc(g.nome)}</b><code>${esc(base)}#g-${g.id}</code><button class="btn btn-sec btn-mini" type="button" data-copiar-link="${esc(base)}#g-${g.id}">Copiar link</button></div>`).join("");
   document.querySelectorAll("[data-copiar-link]").forEach(b => b.addEventListener("click", async () => {
@@ -989,7 +1016,9 @@ function renderComissoes(){
 function rota(){
   const h = location.hash.slice(1);
   if (h.startsWith("g-")){
-    definirGerente(h.slice(2));
+    // já tem gerente: link de outro gerente não troca (troca só com o Diretor de Parcerias)
+    if (!gerenteAtual) definirGerente(h.slice(2));
+    if (typeof montarGerentesCadastro === "function" && $("#c-gerentes").children.length) montarGerentesCadastro();
     history.replaceState(null, "", location.pathname + location.search + "#inicio");
     return;
   }
@@ -1068,11 +1097,19 @@ function abaAcesso(qual){
 function erro(id, txt){ const el=$("#e-"+id); if (el) el.textContent = txt||""; const inp=$("#c-"+id); if (inp) inp.classList.toggle("erro", !!txt); return !txt; }
 function retorno(id, txt, tipo){ const el=$(id); el.textContent=txt; el.className="retorno on "+tipo; }
 
+function montarGerentesCadastro(){
+  if (gerenteFixo()){
+    $("#c-gerentes").innerHTML = `<label class="opcao"><input type="radio" name="ger" value="${gerenteAtual.id}" checked> ${esc(gerenteAtual.nome)}</label>`;
+    return;
+  }
+  const marcado = document.querySelector('#c-gerentes input[name=ger]:checked')?.value;
+  const pre = (marcado && marcado!=="sem" && GERENTES.some(g=>g.id===marcado)) ? marcado : (gerenteAtual?.id || "sem");
+  $("#c-gerentes").innerHTML = GERENTES.map(g=>`<label class="opcao"><input type="radio" name="ger" value="${g.id}" ${pre===g.id?"checked":""}> ${esc(g.nome)}</label>`).join("")
+    + `<label class="opcao"><input type="radio" name="ger" value="sem" ${pre==="sem"?"checked":""}> Não tenho gerente</label>`;
+}
 function montarAcesso(){
   // gerentes no cadastro (pré-seleciona se veio pelo link do gerente)
-  const pre = gerenteAtual?.id;
-  $("#c-gerentes").innerHTML = GERENTES.map(g=>`<label class="opcao"><input type="radio" name="ger" value="${g.id}" ${pre===g.id?"checked":""}> ${esc(g.nome)}</label>`).join("")
-    + `<label class="opcao"><input type="radio" name="ger" value="sem" ${pre?"":"checked"}> Não tenho gerente</label>`;
+  montarGerentesCadastro();
   $("#aba-entrar").onclick = () => abaAcesso("entrar");
   $("#aba-cad").onclick = () => abaAcesso("cad");
   $("#ir-cad").onclick = () => abaAcesso("cad");
